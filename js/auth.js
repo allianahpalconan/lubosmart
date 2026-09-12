@@ -1,175 +1,181 @@
 /* =========================================================
-   LubosMart — Valora Auth
-   Lightweight local authentication used across every page.
-   Stores registered users + the active session in localStorage
-   so sign in / sign up / sign out stays in sync site-wide.
+   LubosMart — Authentication (js/auth.js)
+
+   Simple localStorage-based auth so the frontend can be
+   demoed end to end without a backend. Swap the internals
+   of these functions for real API calls later — the public
+   functions (valoraLogin, valoraRegister, valoraLogout,
+   requireValoraRole, getValoraSession) can keep the same
+   signatures.
    ========================================================= */
 
 (function () {
+    "use strict";
 
-    const USERS_KEY = "valora_users";
-    const SESSION_KEY = "valora_session";
+    var USERS_KEY = "valora_users";
+    var SESSION_KEY = "valora_session";
 
-
-    function readUsers() {
+    function getUsers() {
         try {
-            return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        } catch (e) {
+            var raw = localStorage.getItem(USERS_KEY);
+            var users = raw ? JSON.parse(raw) : [];
+            return Array.isArray(users) ? users : [];
+        } catch (err) {
             return [];
         }
     }
 
-    function writeUsers(users) {
+    function saveUsers(users) {
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 
-    function normalizeEmail(email) {
-        return (email || "").trim().toLowerCase();
+    // Seed a couple of demo accounts on first load so the site
+    // can be tried out immediately without registering first.
+    function seedDemoUsers() {
+        var users = getUsers();
+        if (users.length > 0) return;
+
+        saveUsers([
+            {
+                firstName: "Juana",
+                lastName: "Dela Cruz",
+                email: "buyer@lubosmart.ph",
+                password: "password123",
+                role: "buyer"
+            },
+            {
+                firstName: "Mang",
+                lastName: "Tomas",
+                email: "seller@lubosmart.ph",
+                password: "password123",
+                role: "seller"
+            }
+        ]);
     }
 
+    seedDemoUsers();
+
+    function setSession(user) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role
+        }));
+    }
 
     /* ---------------------------------------------------
-       REGISTER
-       Creates a new account and immediately signs them in.
-    --------------------------------------------------- */
+       getValoraSession()
+       Returns the logged-in session object, or null.
+       --------------------------------------------------- */
 
-    window.valoraRegister = function ({ firstName, lastName, email, password, role }) {
+    window.getValoraSession = function () {
+        try {
+            var raw = localStorage.getItem(SESSION_KEY);
+            return raw ? JSON.parse(raw) : null;
+        } catch (err) {
+            return null;
+        }
+    };
 
-        email = normalizeEmail(email);
+    /* ---------------------------------------------------
+       valoraRegister({ firstName, lastName, email, password, role })
+       Returns { ok, message?, role?, firstName? }
+       --------------------------------------------------- */
 
-        if (!firstName || !lastName || !email || !password || !role) {
-            return { ok: false, message: "Please fill in every field." };
+    window.valoraRegister = function (data) {
+        data = data || {};
+
+        if (!data.firstName || !data.lastName || !data.email || !data.password) {
+            return { ok: false, message: "Please fill in all fields." };
         }
 
-        const users = readUsers();
+        if (data.password.length < 6) {
+            return { ok: false, message: "Password must be at least 6 characters." };
+        }
 
-        if (users.some(u => u.email === email)) {
+        var users = getUsers();
+
+        var emailExists = users.some(function (u) {
+            return u.email.toLowerCase() === data.email.toLowerCase();
+        });
+
+        if (emailExists) {
             return { ok: false, message: "An account with that email already exists." };
         }
 
-        users.push({ firstName, lastName, email, password, role });
-        writeUsers(users);
+        var newUser = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: data.password,
+            role: data.role === "seller" ? "seller" : "buyer"
+        };
 
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-            email, firstName, lastName, role
-        }));
+        users.push(newUser);
+        saveUsers(users);
+        setSession(newUser);
 
-        return { ok: true, role };
+        return { ok: true, role: newUser.role, firstName: newUser.firstName };
     };
 
-
     /* ---------------------------------------------------
-       LOGIN
-    --------------------------------------------------- */
+       valoraLogin(email, password)
+       Returns { ok, message?, role?, firstName? }
+       --------------------------------------------------- */
 
     window.valoraLogin = function (email, password) {
+        var users = getUsers();
 
-        email = normalizeEmail(email);
-
-        const users = readUsers();
-
-        const user = users.find(u => u.email === email && u.password === password);
+        var user = users.find(function (u) {
+            return (
+                u.email.toLowerCase() === String(email || "").toLowerCase() &&
+                u.password === password
+            );
+        });
 
         if (!user) {
             return { ok: false, message: "Invalid email or password." };
         }
 
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            role: user.role
-        }));
+        setSession(user);
 
-        return { ok: true, role: user.role };
+        return { ok: true, role: user.role, firstName: user.firstName };
     };
-
 
     /* ---------------------------------------------------
-       SESSION HELPERS
-    --------------------------------------------------- */
-
-    window.getValoraSession = function () {
-        try {
-            return JSON.parse(localStorage.getItem(SESSION_KEY));
-        } catch (e) {
-            return null;
-        }
-    };
+       valoraLogout()
+       Clears the session and sends the user home.
+       --------------------------------------------------- */
 
     window.valoraLogout = function () {
         localStorage.removeItem(SESSION_KEY);
         window.location.href = "index.html";
     };
 
-
     /* ---------------------------------------------------
-       PAGE GUARD
-       Call on any page that requires a signed-in user of a
-       given role. Redirects to login if the check fails.
-    --------------------------------------------------- */
+       requireValoraRole(role)
+       Use on protected pages (e.g. seller-dashboard.html).
+       Redirects to login if not signed in, or to the
+       correct dashboard if signed in with the wrong role.
+       Returns the session object on success.
+       --------------------------------------------------- */
 
     window.requireValoraRole = function (role) {
+        var session = window.getValoraSession();
 
-        const session = window.getValoraSession();
-
-        if (!session || session.role !== role) {
+        if (!session) {
             window.location.href = "login.html";
+            return null;
+        }
+
+        if (session.role !== role) {
+            window.location.href =
+                session.role === "seller" ? "seller-dashboard.html" : "buyer-dashboard.html";
             return null;
         }
 
         return session;
     };
-
-
-    /* ---------------------------------------------------
-       SEED TEST ACCOUNTS
-       Creates a fixed buyer and seller account the first time
-       the site loads (any page), so testing/checking always
-       has ready-to-use credentials — even after clearing
-       localStorage or opening the site on another computer.
-
-       These are only added if they don't already exist, so
-       re-running this never overwrites real accounts made
-       through register.html.
-    --------------------------------------------------- */
-
-    function seedTestAccounts() {
-
-        const users = readUsers();
-
-        const testAccounts = [
-            {
-                firstName: "Juan",
-                lastName: "Buyer",
-                email: "buyer@lubosmart.com",
-                password: "buyer123",
-                role: "buyer"
-            },
-            {
-                firstName: "Maria",
-                lastName: "Seller",
-                email: "seller@lubosmart.com",
-                password: "seller123",
-                role: "seller"
-            }
-        ];
-
-        let changed = false;
-
-        testAccounts.forEach(account => {
-            const exists = users.some(u => u.email === account.email);
-            if (!exists) {
-                users.push(account);
-                changed = true;
-            }
-        });
-
-        if (changed) {
-            writeUsers(users);
-        }
-    }
-
-    seedTestAccounts();
 
 })();

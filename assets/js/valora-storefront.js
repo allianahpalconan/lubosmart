@@ -1,178 +1,213 @@
 /* =========================================================
-   LubosMart — Storefront behavior
-   Shared across every page: keeps the nav's sign-in link and
-   cart badge in sync, and wires up "Add to Cart" buttons.
+   LubosMart — Storefront helpers (assets/js/valora-storefront.js)
+
+   Shared across every storefront page: cart storage in
+   localStorage, the cart badge in the nav, the "Sign in" /
+   "Hi, {name}" link swap, and the delegated add-to-cart
+   button handler used by index.html, shop.html and
+   product.html.
    ========================================================= */
 
 (function () {
+    "use strict";
 
-    const CART_KEY = "valora_cart";
+    var CART_KEY = "valora_cart";
 
+    /* ---------------------------------------------------
+       CART STORAGE
+       --------------------------------------------------- */
 
-    function readCart() {
+    window.getValoraCart = function () {
         try {
-            return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        } catch (e) {
+            var raw = localStorage.getItem(CART_KEY);
+            var cart = raw ? JSON.parse(raw) : [];
+            return Array.isArray(cart) ? cart : [];
+        } catch (err) {
             return [];
         }
-    }
-
-    function writeCart(cart) {
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        updateCartBadge();
-    }
-
-    window.valoraAddToCart = function (name, price) {
-        const cart = readCart();
-        const existing = cart.find(item => item.name === name);
-
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            cart.push({ name, price, qty: 1 });
-        }
-
-        writeCart(cart);
-        return cart;
     };
 
-    window.getValoraCart = readCart;
+    function saveValoraCart(cart) {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    }
 
     window.valoraClearCart = function () {
-        writeCart([]);
+        saveValoraCart([]);
     };
 
+    // Exposed so pages like product.html (which have their own
+    // quantity selector) can add a specific quantity at once.
+    // Returns true if the item was added, false if it was blocked
+    // (e.g. because the shopper isn't signed in yet).
+    window.valoraAddToCart = function (name, price, qty) {
+        var session = typeof window.getValoraSession === "function"
+            ? window.getValoraSession()
+            : null;
 
-    function cartCount() {
-        return readCart().reduce((sum, item) => sum + item.qty, 0);
+        if (!session) {
+            showSignInRequiredModal();
+            return false;
+        }
+
+        qty = Number(qty) || 1;
+
+        var cart = window.getValoraCart();
+        var existing = cart.find(function (item) {
+            return item.name === name;
+        });
+
+        if (existing) {
+            existing.qty += qty;
+        } else {
+            cart.push({ name: name, price: price, qty: qty });
+        }
+
+        saveValoraCart(cart);
+        updateCartBadge();
+        return true;
+    };
+
+    /* ---------------------------------------------------
+       SIGN-IN REQUIRED MODAL
+       Injected on demand so it works on any page, even ones
+       that don't already define this markup/CSS themselves.
+       --------------------------------------------------- */
+
+    function injectSignInModal() {
+        if (document.getElementById("valoraSignInModal")) return;
+
+        var style = document.createElement("style");
+        style.textContent =
+            ".valora-modal-overlay{display:none;position:fixed;inset:0;background:rgba(43,15,63,0.55);" +
+            "align-items:center;justify-content:center;z-index:3000;padding:20px;}" +
+            ".valora-modal-overlay.active{display:flex;}" +
+            ".valora-modal-box{background:#FFFFFF;border-radius:16px;padding:34px 30px 26px;max-width:380px;" +
+            "width:100%;text-align:center;box-shadow:0 20px 50px rgba(43,15,63,0.20);font-family:'Inter',sans-serif;}" +
+            ".valora-modal-icon{width:54px;height:54px;margin:0 auto 16px;border-radius:50%;background:#F1E9FA;" +
+            "color:#3B1656;display:flex;align-items:center;justify-content:center;font-size:24px;}" +
+            ".valora-modal-title{font-family:'Baloo 2','Inter',sans-serif;font-size:18px;color:#2A0F3F;margin-bottom:8px;}" +
+            ".valora-modal-message{font-size:13px;color:#746C80;margin-bottom:24px;line-height:1.5;}" +
+            ".valora-modal-actions{display:flex;gap:10px;}" +
+            ".valora-modal-btn{flex:1;padding:12px;border:none;border-radius:8px;font-size:13px;font-weight:700;" +
+            "cursor:pointer;transition:0.2s;font-family:'Inter',sans-serif;}" +
+            ".valora-modal-btn-primary{background:#F5A623;color:#2A0F3F;}" +
+            ".valora-modal-btn-primary:hover{background:#DB8E10;}" +
+            ".valora-modal-btn-secondary{background:#F1E9FA;color:#2A0F3F;}" +
+            ".valora-modal-btn-secondary:hover{background:#E3D4F2;}";
+        document.head.appendChild(style);
+
+        var overlay = document.createElement("div");
+        overlay.id = "valoraSignInModal";
+        overlay.className = "valora-modal-overlay";
+        overlay.innerHTML =
+            '<div class="valora-modal-box">' +
+            '<div class="valora-modal-icon">🔒</div>' +
+            '<div class="valora-modal-title">Sign in required</div>' +
+            '<div class="valora-modal-message">Please sign in before adding items to your cart.</div>' +
+            '<div class="valora-modal-actions">' +
+            '<button class="valora-modal-btn valora-modal-btn-secondary" id="valoraModalCancel">Cancel</button>' +
+            '<button class="valora-modal-btn valora-modal-btn-primary" id="valoraModalSignIn">Sign in</button>' +
+            "</div></div>";
+
+        document.body.appendChild(overlay);
+
+        document.getElementById("valoraModalCancel").addEventListener("click", function () {
+            overlay.classList.remove("active");
+        });
+
+        document.getElementById("valoraModalSignIn").addEventListener("click", function () {
+            window.location.href = "login.html";
+        });
+
+        overlay.addEventListener("click", function (event) {
+            if (event.target === overlay) overlay.classList.remove("active");
+        });
     }
 
+    function showSignInRequiredModal() {
+        injectSignInModal();
+        document.getElementById("valoraSignInModal").classList.add("active");
+    }
+
+    /* ---------------------------------------------------
+       CART BADGE (nav icon)
+       --------------------------------------------------- */
 
     function updateCartBadge() {
-        const badge = document.getElementById("cartCount");
+        var badge = document.getElementById("cartCount");
         if (!badge) return;
 
-        const count = cartCount();
+        var cart = window.getValoraCart();
+        var count = cart.reduce(function (sum, item) {
+            return sum + item.qty;
+        }, 0);
+
         badge.textContent = count;
         badge.style.display = count > 0 ? "inline-flex" : "none";
     }
 
+    /* ---------------------------------------------------
+       AUTH LINK (nav "Sign in" -> "Hi, {name}")
+       --------------------------------------------------- */
 
     function updateAuthLink() {
-        const session = window.getValoraSession && window.getValoraSession();
-        const link = document.getElementById("authLink");
+        var authLink = document.getElementById("authLink");
+        if (!authLink) return;
 
-        if (!link) return;
+        var session = typeof window.getValoraSession === "function"
+            ? window.getValoraSession()
+            : null;
 
         if (session) {
-            link.textContent = "Hi, " + session.firstName;
-            link.href = session.role === "seller"
+            authLink.textContent = "Hi, " + session.firstName;
+            authLink.href = session.role === "seller"
                 ? "seller-dashboard.html"
                 : "buyer-dashboard.html";
         } else {
-            link.textContent = "Sign in";
-            link.href = "login.html";
+            authLink.textContent = "Sign in";
+            authLink.href = "login.html";
         }
     }
-
 
     /* ---------------------------------------------------
-       TOAST NOTIFICATION
-       Small floating message used to prompt sign-in before
-       adding to cart. Styles are injected once so this works
-       on any page without needing extra CSS files.
-    --------------------------------------------------- */
+       ADD TO CART — delegated click handler
+       Works for any button anywhere on the page with:
+       data-add-to-cart data-name="..." data-price="..."
+       (optionally data-qty="...", default 1)
+       --------------------------------------------------- */
 
-    window.showValoraToast = function (message, duration) {
-        let toast = document.getElementById("valora-toast");
+    document.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-add-to-cart]");
+        if (!button) return;
 
-        if (!toast) {
-            toast = document.createElement("div");
-            toast.id = "valora-toast";
-            document.body.appendChild(toast);
+        var name = button.getAttribute("data-name");
+        var price = button.getAttribute("data-price");
+        var qty = Number(button.getAttribute("data-qty")) || 1;
 
-            const style = document.createElement("style");
-            style.textContent = `
-                #valora-toast {
-                    position: fixed;
-                    bottom: 26px;
-                    left: 50%;
-                    transform: translateX(-50%) translateY(16px);
-                    background: #2A0F3F;
-                    color: #fff;
-                    padding: 14px 22px;
-                    border-radius: 10px;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 13.5px;
-                    font-weight: 600;
-                    box-shadow: 0 14px 34px rgba(43,15,63,0.28);
-                    z-index: 9999;
-                    opacity: 0;
-                    pointer-events: none;
-                    transition: opacity 0.25s ease, transform 0.25s ease;
-                    text-align: center;
-                    max-width: 90vw;
-                }
-                #valora-toast.show {
-                    opacity: 1;
-                    transform: translateX(-50%) translateY(0);
-                    pointer-events: auto;
-                }
-                #valora-toast a {
-                    color: #F5A623;
-                    font-weight: 700;
-                    text-decoration: underline;
-                }
-            `;
-            document.head.appendChild(style);
-        }
+        if (!name || !price) return;
 
-        toast.innerHTML = message;
-        toast.classList.add("show");
+        var added = window.valoraAddToCart(name, price, qty);
+        if (!added) return;
 
-        clearTimeout(toast._hideTimer);
-        toast._hideTimer = setTimeout(() => {
-            toast.classList.remove("show");
-        }, duration || 3200);
-    }
+        var original = button.innerHTML;
+        var originalDisabled = button.disabled;
 
+        button.innerHTML = "✓ Added";
+        button.disabled = true;
 
-    function wireAddToCartButtons() {
-        // Delegated listener on the document so this keeps working even
-        // when buttons are re-rendered dynamically (e.g. shop.html
-        // re-rendering the grid on filter/search).
-        document.addEventListener("click", function (event) {
-            const button = event.target.closest("[data-add-to-cart]");
-            if (!button) return;
+        setTimeout(function () {
+            button.innerHTML = original;
+            button.disabled = originalDisabled;
+        }, 1100);
+    });
 
-            event.preventDefault();
-
-            const session = window.getValoraSession && window.getValoraSession();
-
-            if (!session) {
-                window.showValoraToast('Please <a href="login.html">sign in</a> first to add items to your cart.');
-                return;
-            }
-
-            const name = button.getAttribute("data-name") || "Product";
-            const price = button.getAttribute("data-price") || "";
-
-            window.valoraAddToCart(name, price);
-
-            const originalText = button.innerHTML;
-            button.innerHTML = "✓ Added";
-
-            setTimeout(() => {
-                button.innerHTML = originalText;
-            }, 1200);
-        });
-    }
-
+    /* ---------------------------------------------------
+       INIT
+       --------------------------------------------------- */
 
     document.addEventListener("DOMContentLoaded", function () {
-        updateAuthLink();
         updateCartBadge();
-        wireAddToCartButtons();
+        updateAuthLink();
     });
 
 })();

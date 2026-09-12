@@ -181,6 +181,40 @@
             opacity: 0.6;
         }
 
+        /* SIGN-IN BANNER */
+
+        .signin-banner {
+            margin: 24px 7% 0;
+            padding: 16px 22px;
+            background: var(--primary-light);
+            border: 1px solid #E0CFF0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .signin-banner p {
+            font-size: 12.5px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .signin-banner a {
+            padding: 10px 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .signin-banner a:hover { background: var(--primary-dark); }
+
         /* PRODUCTS */
 
         .shop-grid {
@@ -269,6 +303,49 @@
             font-size: 13px;
         }
 
+        /* LOCKED / SIGN-IN TO SEE MORE CARD */
+
+        .locked-card {
+            grid-column: 1 / -1;
+            border: 1.5px dashed #D8C3EC;
+            border-radius: 12px;
+            background: var(--primary-light);
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .locked-icon {
+            width: 50px; height: 50px; margin: 0 auto 14px;
+            border-radius: 50%; background: white; color: var(--primary);
+            display: flex; align-items: center; justify-content: center; font-size: 19px;
+        }
+
+        .locked-card h3 {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 17px;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .locked-card p {
+            color: var(--muted);
+            font-size: 12.5px;
+            margin-bottom: 18px;
+        }
+
+        .locked-btn {
+            display: inline-flex;
+            padding: 12px 22px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .locked-btn:hover { background: var(--accent-dark); }
+
         /* FOOTER (shared, condensed) */
 
         footer {
@@ -306,6 +383,7 @@
         @media (max-width: 700px) {
             .nav-links { display: none; }
             .shop-header, .toolbar, .shop-grid { padding-left: 5%; padding-right: 5%; }
+            .signin-banner { margin-left: 5%; margin-right: 5%; }
             .toolbar { flex-direction: column; align-items: stretch; }
         }
 
@@ -389,6 +467,14 @@
     </div>
 
 
+    <!-- SIGN-IN BANNER (shown only when signed out) -->
+
+    <div class="signin-banner" id="signinBanner" style="display:none;">
+        <p>Sign in to unlock the full LubosMart catalog.</p>
+        <a href="login.html">Sign in</a>
+    </div>
+
+
     <!-- PRODUCT GRID -->
 
     <div class="shop-grid" id="shopGrid">
@@ -457,9 +543,14 @@
 
         const SHOP_PRODUCTS = window.LUBOSMART_PRODUCTS;
 
+        // Only these show up before signing in — the rest of the
+        // catalog unlocks once a shopper has an account.
+        const PREVIEW_COUNT = 4;
+
         const grid = document.getElementById("shopGrid");
         const filterBar = document.getElementById("filterBar");
         const searchInput = document.getElementById("searchInput");
+        const signinBanner = document.getElementById("signinBanner");
 
         let activeCategory = "All";
 
@@ -467,45 +558,68 @@
             return "₱" + n.toLocaleString("en-PH");
         }
 
+        function isSignedIn() {
+            return typeof window.getValoraSession === "function" && !!window.getValoraSession();
+        }
+
         function renderProducts() {
+
+            const signedIn = isSignedIn();
+            signinBanner.style.display = signedIn ? "none" : "flex";
+
+            const pool = signedIn ? SHOP_PRODUCTS : SHOP_PRODUCTS.slice(0, PREVIEW_COUNT);
 
             const query = searchInput.value.trim().toLowerCase();
 
-            const filtered = SHOP_PRODUCTS.filter(p => {
+            const filtered = pool.filter(p => {
                 const matchesCategory = activeCategory === "All" || p.category === activeCategory;
                 const matchesQuery = !query || p.name.toLowerCase().includes(query);
                 return matchesCategory && matchesQuery;
             });
 
+            let html = "";
+
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="no-results">No products match your search. Try a different category or keyword.</div>';
-                return;
+                html = '<div class="no-results">No products match your search. Try a different category or keyword.</div>';
+            } else {
+                html = filtered.map(p => `
+                    <article class="product">
+                        <a class="product-link" href="product.html?id=${p.id}">
+                            <div class="product-image">
+                                ${p.images && p.images[0]
+                                    ? `<img src="${p.images[0]}" alt="${p.name}" class="product-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                       <div class="image-placeholder" style="display:none;">${p.initial}</div>`
+                                    : `<div class="image-placeholder">${p.initial}</div>`}
+                                <div class="product-tag">${p.tag}</div>
+                            </div>
+                            <div class="product-info-top">
+                                <div class="product-category">${p.category}</div>
+                                <div class="product-name">${p.name}</div>
+                                <div class="rating">${"★".repeat(p.rating)}${"☆".repeat(5 - p.rating)}</div>
+                            </div>
+                        </a>
+                        <div class="product-bottom-wrap">
+                            <div class="product-bottom">
+                                <div class="price">${formatPrice(p.price)}</div>
+                                <button class="add-btn" data-add-to-cart data-name="${p.name}" data-price="${formatPrice(p.price)}">🛒 Add to Cart</button>
+                            </div>
+                        </div>
+                    </article>
+                `).join("");
             }
 
-            grid.innerHTML = filtered.map(p => `
-                <article class="product">
-                    <a class="product-link" href="product.html?id=${p.id}">
-                        <div class="product-image">
-                            ${p.images && p.images[0]
-                                ? `<img src="${p.images[0]}" alt="${p.name}" class="product-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                   <div class="image-placeholder" style="display:none;">${p.initial}</div>`
-                                : `<div class="image-placeholder">${p.initial}</div>`}
-                            <div class="product-tag">${p.tag}</div>
-                        </div>
-                        <div class="product-info-top">
-                            <div class="product-category">${p.category}</div>
-                            <div class="product-name">${p.name}</div>
-                            <div class="rating">${"★".repeat(p.rating)}${"☆".repeat(5 - p.rating)}</div>
-                        </div>
-                    </a>
-                    <div class="product-bottom-wrap">
-                        <div class="product-bottom">
-                            <div class="price">${formatPrice(p.price)}</div>
-                            <button class="add-btn" data-add-to-cart data-name="${p.name}" data-price="${formatPrice(p.price)}">🛒 Add to Cart</button>
-                        </div>
+            if (!signedIn) {
+                html += `
+                    <div class="locked-card">
+                        <div class="locked-icon">🔒</div>
+                        <h3>More products for signed-in shoppers</h3>
+                        <p>Create a free account or sign in to browse the full LubosMart catalog.</p>
+                        <a href="login.html" class="locked-btn">Sign in to see more →</a>
                     </div>
-                </article>
-            `).join("");
+                `;
+            }
+
+            grid.innerHTML = html;
 
             // Add-to-cart clicks are handled by the delegated listener
             // in assets/js/valora-storefront.js — no need to re-wire here.
@@ -540,6 +654,16 @@
         })();
 
         renderProducts();
+
+        // Re-check sign-in state if the shopper logs in/out in another
+        // tab, or comes back to this tab after signing in elsewhere.
+        window.addEventListener("storage", function (event) {
+            if (event.key === "valora_session") renderProducts();
+        });
+
+        document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) renderProducts();
+        });
 
     </script>
 
