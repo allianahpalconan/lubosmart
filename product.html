@@ -523,9 +523,17 @@
 
         function renderRelated(product) {
 
-            var related = window.LUBOSMART_PRODUCTS.filter(function (p) {
+            var sameCategory = window.LUBOSMART_PRODUCTS.filter(function (p) {
                 return p.category === product.category && p.id !== product.id;
-            }).slice(0, 4);
+            });
+
+            var others = window.LUBOSMART_PRODUCTS.filter(function (p) {
+                return p.category !== product.category && p.id !== product.id;
+            });
+
+            // Show same-category picks first, then fill any remaining
+            // slots with other products so the section never looks empty.
+            var related = sameCategory.concat(others).slice(0, 4);
 
             if (related.length === 0) return;
 
