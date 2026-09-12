@@ -121,4 +121,55 @@
         return session;
     };
 
+
+    /* ---------------------------------------------------
+       SEED TEST ACCOUNTS
+       Creates a fixed buyer and seller account the first time
+       the site loads (any page), so testing/checking always
+       has ready-to-use credentials — even after clearing
+       localStorage or opening the site on another computer.
+
+       These are only added if they don't already exist, so
+       re-running this never overwrites real accounts made
+       through register.html.
+    --------------------------------------------------- */
+
+    function seedTestAccounts() {
+
+        const users = readUsers();
+
+        const testAccounts = [
+            {
+                firstName: "Juan",
+                lastName: "Buyer",
+                email: "buyer@lubosmart.com",
+                password: "buyer123",
+                role: "buyer"
+            },
+            {
+                firstName: "Maria",
+                lastName: "Seller",
+                email: "seller@lubosmart.com",
+                password: "seller123",
+                role: "seller"
+            }
+        ];
+
+        let changed = false;
+
+        testAccounts.forEach(account => {
+            const exists = users.some(u => u.email === account.email);
+            if (!exists) {
+                users.push(account);
+                changed = true;
+            }
+        });
+
+        if (changed) {
+            writeUsers(users);
+        }
+    }
+
+    seedTestAccounts();
+
 })();

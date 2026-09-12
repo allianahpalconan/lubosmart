@@ -181,18 +181,6 @@
             border-radius: 8px; font-size: 13px; font-weight: 700;
         }
 
-        .success-banner {
-            display: none;
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            border: 1px solid #D8C3EC;
-            border-radius: 10px;
-            padding: 16px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
         @media (max-width: 800px) {
             .nav-links { display: none; }
             .cart-layout { grid-template-columns: 1fr; }
@@ -259,6 +247,11 @@
             color: var(--muted);
             margin-bottom: 24px;
             line-height: 1.5;
+        }
+
+        .modal-icon.success {
+            background: #E6F7EC;
+            color: #2E9E5B;
         }
 
         .modal-actions {
@@ -337,10 +330,6 @@
 
         <h1>Your Cart</h1>
 
-        <div class="success-banner" id="successBanner">
-            ✓ Order placed! Thanks for shopping local — you'll see this order on your dashboard.
-        </div>
-
         <div id="cartContent"></div>
 
     </div>
@@ -359,12 +348,23 @@
     </div>
 
 
+    <div class="modal-overlay" id="orderSuccessModal">
+        <div class="modal-box">
+            <div class="modal-icon success">✓</div>
+            <div class="modal-title">Order placed!</div>
+            <div class="modal-message">Thanks for shopping local — you'll see this order on your dashboard.</div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" id="orderSuccessCloseBtn" style="width:100%;">Okay</button>
+            </div>
+        </div>
+    </div>
+
+
     <script src="assets/js/valora-storefront.js"></script>
 
     <script>
 
         const cartContent = document.getElementById("cartContent");
-        const successBanner = document.getElementById("successBanner");
 
         function parsePrice(priceStr) {
             return Number(String(priceStr).replace(/[^\d.]/g, "")) || 0;
@@ -449,6 +449,19 @@
             if (event.target === signInModal) closeSignInModal();
         });
 
+        const orderSuccessModal = document.getElementById("orderSuccessModal");
+        const orderSuccessCloseBtn = document.getElementById("orderSuccessCloseBtn");
+
+        orderSuccessCloseBtn.addEventListener("click", function () {
+            orderSuccessModal.classList.remove("active");
+        });
+
+        orderSuccessModal.addEventListener("click", function (event) {
+            if (event.target === orderSuccessModal) {
+                orderSuccessModal.classList.remove("active");
+            }
+        });
+
         function handleCheckout() {
 
             // Block checkout kung walang naka-sign in na user
@@ -460,9 +473,8 @@
             }
 
             window.valoraClearCart();
-            successBanner.style.display = "block";
+            orderSuccessModal.classList.add("active");
             renderCart();
-            window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
         cartContent.addEventListener("click", function (event) {
