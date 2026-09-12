@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LubosMart | Product</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #3B1656;
+            --primary-dark: #2A0F3F;
+            --primary-light: #F1E9FA;
+            --accent: #F5A623;
+            --accent-dark: #DB8E10;
+            --text: #221331;
+            --muted: #746C80;
+            --background: #FBFAFC;
+            --white: #FFFFFF;
+            --border: #E9E2F0;
+            --shadow: 0 14px 34px rgba(43, 15, 63, 0.10);
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--background); color: var(--text); line-height: 1.5; }
+        a { text-decoration: none; color: inherit; }
+        button, input { font-family: inherit; }
+
+        nav {
+            height: 78px; padding: 0 7%; background: var(--white); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-mark { width: 46px; height: 46px; flex-shrink: 0; border-radius: 14px; box-shadow: 0 6px 16px rgba(43,15,63,.18); }
+        .logo { font-family: 'Baloo 2', 'Inter', sans-serif; color: var(--primary) !important; font-size: 22px; font-weight: 700; }
+
+        .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
+        .nav-links a { color: #524A5E; font-size: 13.5px; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+
+        .cart-link {
+            position: relative; display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 8px; font-size: 16px; color: var(--primary) !important;
+        }
+        .cart-badge {
+            position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px;
+            border-radius: 999px; background: var(--accent); color: var(--primary-dark);
+            font-size: 10px; font-weight: 800; display: none; align-items: center; justify-content: center;
+        }
+
+        .signin { color: var(--text); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+        .start-btn { padding: 11px 20px; background: var(--accent) !important; color: var(--primary-dark) !important; border-radius: 8px; font-size: 13px; font-weight: 700; }
+
+        .page { max-width: 1100px; margin: 0 auto; padding: 40px 7% 100px; }
+
+        .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 26px; }
+        .breadcrumb a { color: var(--primary); font-weight: 600; }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        /* GALLERY */
+
+        .gallery-main {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: var(--primary-light);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-main .image-placeholder {
+            width: 110px; height: 110px; border-radius: 50%;
+            background: white; color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; font-weight: 700;
+        }
+
+        .gallery-thumbs {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-thumb {
+            width: 74px;
+            height: 74px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background: var(--primary-light);
+            flex-shrink: 0;
+            transition: 0.15s;
+        }
+
+        .gallery-thumb.active { border-color: var(--primary); }
+
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* DETAILS */
+
+        .product-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            margin-bottom: 14px;
+        }
+
+        .product-category {
+            color: #9B90A8; font-size: 10px; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 30px;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .rating {
+            color: var(--accent-dark);
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .qty-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .qty-control {
+            display: flex; align-items: center; gap: 14px;
+            border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px;
+        }
+
+        .qty-control button {
+            border: none; background: none; color: var(--primary); font-size: 16px; font-weight: 700; cursor: pointer; width: 18px;
+        }
+
+        .qty-control span { font-size: 14px; font-weight: 600; min-width: 16px; text-align: center; }
+
+        .action-row { display: flex; gap: 14px; }
+
+        .add-to-cart-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-to-cart-btn:hover { background: var(--accent-dark); }
+
+        .add-to-cart-btn.added { background: #6FCF97; color: white; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .not-found h2 { font-family: 'Baloo 2', sans-serif; color: var(--primary-dark); margin-bottom: 12px; }
+        .not-found p { color: var(--muted); margin-bottom: 20px; }
+
+        .primary-btn {
+            display: inline-flex; padding: 13px 22px;
+            background: var(--primary); color: white;
+            border-radius: 8px; font-size: 13px; font-weight: 700;
+        }
+
+        @media (max-width: 800px) {
+            .nav-links { display: none; }
+            .product-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .signin { display: none; }
+        }
+
+    </style>
+
+    <script src="js/auth.js"></script>
+
+</head>
+
+<body>
+
+    <nav>
+
+        <a href="index.html" class="brand">
+            <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="60" height="60" rx="16" fill="#3B1656"/>
+                <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25" stroke="#2A0F3F" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <rect x="18" y="24" width="28" height="24" rx="5" fill="#F5A623"/>
+                <circle cx="27.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <circle cx="36.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <path d="M27 40 Q32 43.5 37 40" stroke="#2A0F3F" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24" stroke="#F5A623" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="logo">LubosMart</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="sell-with-us.html">Sell with us</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-link" aria-label="View cart">
+                🛒
+                <span class="cart-badge" id="cartCount">0</span>
+            </a>
+            <a href="login.html" class="signin" id="authLink">Sign in</a>
+            <a href="shop.html" class="start-btn">Start shopping</a>
+        </div>
+
+    </nav>
+
+
+    <div class="page" id="pageContent">
+        <!-- Injected by script below -->
+    </div>
+
+
+    <script src="assets/js/valora-storefront.js"></script>
+    <script src="assets/js/products-data.js"></script>
+
+    <script>
+
+        const pageContent = document.getElementById("pageContent");
+
+        function formatPrice(n) {
+            return "₱" + n.toLocaleString("en-PH");
+        }
+
+        function getProductIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("id");
+        }
+
+        function renderNotFound() {
+            pageContent.innerHTML = `
+                <div class="not-found">
+                    <h2>Product not found</h2>
+                    <p>This item may have been removed or the link is incorrect.</p>
+                    <a href="shop.html" class="primary-btn">← Back to Shop</a>
+                </div>
+            `;
+        }
+
+        function renderProduct(product) {
+
+            const images = (product.images && product.images.length > 0)
+                ? product.images
+                : [];
+
+            const mainImageHtml = images.length > 0
+                ? `<img src="${images[0]}" alt="${product.name}" id="mainImage" onerror="this.style.display='none'; document.getElementById('mainPlaceholder').style.display='flex';">
+                   <div class="image-placeholder" id="mainPlaceholder" style="display:none;">${product.initial}</div>`
+                : `<div class="image-placeholder">${product.initial}</div>`;
+
+            const thumbsHtml = images.length > 1
+                ? `<div class="gallery-thumbs">
+                    ${images.map((img, i) => `
+                        <div class="gallery-thumb ${i === 0 ? 'active' : ''}" data-index="${i}">
+                            <img src="${img}" alt="${product.name} ${i + 1}">
+                        </div>
+                    `).join("")}
+                   </div>`
+                : "";
+
+            pageContent.innerHTML = `
+                <a href="shop.html" class="back-link">← Back to Shop</a>
+
+                <div class="breadcrumb">
+                    <a href="shop.html">Shop</a> / ${product.category} / ${product.name}
+                </div>
+
+                <div class="product-layout">
+
+                    <div class="gallery">
+                        <div class="gallery-main" id="galleryMain">
+                            ${mainImageHtml}
+                        </div>
+                        ${thumbsHtml}
+                    </div>
+
+                    <div class="product-details">
+                        <div class="product-tag">${product.tag}</div>
+                        <div class="product-category">${product.category}</div>
+                        <h1 class="product-title">${product.name}</h1>
+                        <div class="rating">${"★".repeat(product.rating)}${"☆".repeat(5 - product.rating)}</div>
+                        <div class="product-price">${formatPrice(product.price)}</div>
+                        <p class="product-description">${product.description || ""}</p>
+
+                        <div class="qty-row">
+                            <div class="qty-control">
+                                <button id="qtyMinus">−</button>
+                                <span id="qtyValue">1</span>
+                                <button id="qtyPlus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="action-row">
+                            <button class="add-to-cart-btn" id="addToCartBtn">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+
+            wireGallery(images);
+            wireQuantityAndCart(product);
+        }
+
+        function wireGallery(images) {
+
+            const thumbs = document.querySelectorAll(".gallery-thumb");
+            if (thumbs.length === 0) return;
+
+            thumbs.forEach(thumb => {
+                thumb.addEventListener("click", function () {
+                    const index = Number(this.getAttribute("data-index"));
+
+                    thumbs.forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const mainImage = document.getElementById("mainImage");
+                    if (mainImage) {
+                        mainImage.src = images[index];
+                    }
+                });
+            });
+        }
+
+        function wireQuantityAndCart(product) {
+
+            let qty = 1;
+            const qtyValue = document.getElementById("qtyValue");
+            const qtyMinus = document.getElementById("qtyMinus");
+            const qtyPlus = document.getElementById("qtyPlus");
+            const addToCartBtn = document.getElementById("addToCartBtn");
+
+            qtyMinus.addEventListener("click", function () {
+                if (qty > 1) {
+                    qty -= 1;
+                    qtyValue.textContent = qty;
+                }
+            });
+
+            qtyPlus.addEventListener("click", function () {
+                qty += 1;
+                qtyValue.textContent = qty;
+            });
+
+            addToCartBtn.addEventListener("click", function () {
+                for (let i = 0; i < qty; i++) {
+                    window.valoraAddToCart(product.name, formatPrice(product.price));
+                }
+
+                const originalText = addToCartBtn.innerHTML;
+                addToCartBtn.classList.add("added");
+                addToCartBtn.innerHTML = "✓ Added to Cart";
+
+                setTimeout(() => {
+                    addToCartBtn.classList.remove("added");
+                    addToCartBtn.innerHTML = originalText;
+                }, 1200);
+            });
+        }
+
+        (function init() {
+            const id = getProductIdFromUrl();
+            const product = (window.LUBOSMART_PRODUCTS || []).find(p => p.id === id);
+
+            if (!product) {
+                renderNotFound();
+                return;
+            }
+
+            renderProduct(product);
+        })();
+
+    </script>
+
+</body>
+</html>

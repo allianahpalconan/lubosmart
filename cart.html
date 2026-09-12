@@ -203,6 +203,94 @@
             .cart-row { flex-wrap: wrap; }
         }
 
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(43, 15, 63, 0.55);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 34px 30px 26px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: modalPop 0.18s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.94); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .modal-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 18px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .modal-message {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-btn-primary {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .modal-btn-primary:hover { background: var(--accent-dark); }
+
+        .modal-btn-secondary {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .modal-btn-secondary:hover { background: #E3D4F2; }
+
     </style>
 
     <script src="js/auth.js"></script>
@@ -255,6 +343,19 @@
 
         <div id="cartContent"></div>
 
+    </div>
+
+
+    <div class="modal-overlay" id="signInModal">
+        <div class="modal-box">
+            <div class="modal-icon">🔒</div>
+            <div class="modal-title">Sign in required</div>
+            <div class="modal-message">Kailangan mo munang mag-sign in bago mag-checkout.</div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" id="modalCancelBtn">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="modalSignInBtn">Sign in</button>
+            </div>
+        </div>
     </div>
 
 
@@ -326,7 +427,38 @@
             document.getElementById("checkoutBtn").addEventListener("click", handleCheckout);
         }
 
+        const signInModal = document.getElementById("signInModal");
+        const modalCancelBtn = document.getElementById("modalCancelBtn");
+        const modalSignInBtn = document.getElementById("modalSignInBtn");
+
+        function openSignInModal() {
+            signInModal.classList.add("active");
+        }
+
+        function closeSignInModal() {
+            signInModal.classList.remove("active");
+        }
+
+        modalCancelBtn.addEventListener("click", closeSignInModal);
+        modalSignInBtn.addEventListener("click", function () {
+            window.location.href = "login.html";
+        });
+
+        // Close kung ni-click sa labas ng modal box
+        signInModal.addEventListener("click", function (event) {
+            if (event.target === signInModal) closeSignInModal();
+        });
+
         function handleCheckout() {
+
+            // Block checkout kung walang naka-sign in na user
+            const session = window.getValoraSession ? window.getValoraSession() : null;
+
+            if (!session) {
+                openSignInModal();
+                return;
+            }
+
             window.valoraClearCart();
             successBanner.style.display = "block";
             renderCart();
