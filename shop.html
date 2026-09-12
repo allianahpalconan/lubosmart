@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LubosMart | Shop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #3B1656;
+            --primary-dark: #2A0F3F;
+            --primary-light: #F1E9FA;
+            --accent: #F5A623;
+            --accent-dark: #DB8E10;
+            --accent-light: #FFF3DE;
+            --text: #221331;
+            --muted: #746C80;
+            --background: #FBFAFC;
+            --white: #FFFFFF;
+            --border: #E9E2F0;
+            --shadow: 0 14px 34px rgba(43, 15, 63, 0.10);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button, input { font-family: inherit; }
+
+        /* NAV (shared) */
+
+        nav {
+            height: 78px;
+            padding: 0 7%;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+
+        .brand-mark {
+            width: 46px; height: 46px; flex-shrink: 0;
+            border-radius: 14px;
+            box-shadow: 0 6px 16px rgba(43,15,63,.18);
+        }
+
+        .logo {
+            font-family: 'Baloo 2', 'Inter', sans-serif;
+            color: var(--primary) !important;
+            font-size: 22px; font-weight: 700;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
+
+        .nav-links a { color: #524A5E; font-size: 13.5px; font-weight: 500; transition: 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+
+        .cart-link {
+            position: relative; display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 8px; font-size: 16px;
+            color: var(--primary) !important; transition: 0.2s;
+        }
+        .cart-link:hover { background: var(--primary-light); }
+
+        .cart-badge {
+            position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px;
+            padding: 0 4px; border-radius: 999px; background: var(--accent); color: var(--primary-dark);
+            font-size: 10px; font-weight: 800; display: none; align-items: center; justify-content: center;
+        }
+
+        .signin { color: var(--text); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+        .signin:hover { color: var(--primary); }
+
+        .start-btn {
+            padding: 11px 20px; background: var(--accent) !important; color: var(--primary-dark) !important;
+            border-radius: 8px; font-size: 13px; font-weight: 700; transition: 0.2s;
+        }
+        .start-btn:hover { background: var(--accent-dark) !important; transform: translateY(-1px); }
+
+        /* PAGE HEADER */
+
+        .shop-header {
+            padding: 50px 7% 34px;
+            background: var(--hero-bg, #F3EDFB);
+        }
+
+        .shop-header h1 {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 34px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .shop-header p { color: var(--muted); font-size: 13.5px; }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            padding: 24px 7% 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: white;
+            color: var(--muted);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .filter-chip:hover { border-color: #D8C3EC; color: var(--primary); }
+
+        .filter-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 240px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 16px 11px 38px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12.5px;
+            outline: none;
+            background: white;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59,22,86,0.08);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        /* PRODUCTS */
+
+        .shop-grid {
+            padding: 34px 7% 90px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .product {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.25s;
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+        .product:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+
+        .product-image {
+            height: 210px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-placeholder {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: white; color: var(--primary) !important;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 23px; font-weight: 700;
+            box-shadow: 0 8px 20px rgba(43,15,63,0.06);
+        }
+
+        .product-tag {
+            position: absolute; top: 14px; left: 14px;
+            padding: 5px 9px; background: var(--accent); color: var(--primary-dark) !important;
+            border-radius: 5px; font-size: 9px; font-weight: 800; letter-spacing: 0.4px;
+        }
+
+        .product-info { padding: 18px; }
+
+        .product-category {
+            color: #9B90A8; font-size: 9px; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 7px;
+        }
+
+        .product-name { font-size: 14px; font-weight: 600; margin-bottom: 9px; }
+
+        .rating { color: var(--accent-dark); font-size: 10px; letter-spacing: 1px; margin-bottom: 14px; }
+
+        .product-bottom { display: flex; align-items: center; justify-content: space-between; }
+
+        .price { color: var(--primary) !important; font-size: 15px; font-weight: 700; }
+
+        .add-btn {
+            padding: 7px 10px; min-width: 110px; min-height: 38px;
+            border: 1px solid #D8C3EC; border-radius: 6px; color: var(--primary) !important;
+            font-size: 10px; font-weight: 700; transition: 0.2s;
+            display: inline-flex !important; align-items: center !important; justify-content: center !important;
+            gap: 5px; white-space: nowrap; background: white; cursor: pointer;
+        }
+
+        .add-btn:hover { background: var(--primary); border-color: var(--primary); color: white !important; }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* FOOTER (shared, condensed) */
+
+        footer {
+            background: linear-gradient(150deg, #1E0C2E, #3B1656) !important;
+            color: white;
+            padding: 50px 7% 25px;
+        }
+
+        .footer-grid {
+            max-width: 1400px; margin: auto;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px;
+        }
+
+        .footer-brand { display: flex; flex-direction: column; gap: 15px; }
+        .footer-brand .brand { gap: 10px; }
+        .footer-brand .logo { color: white !important; }
+        .footer-brand p { max-width: 320px; color: #C6B9D4; font-size: 12px; line-height: 1.8; }
+
+        .footer-column h3 { font-size: 11px; letter-spacing: 1px; margin-bottom: 18px; color: var(--accent); }
+        .footer-column a { display: block; color: #C6B9D4; font-size: 12px; margin-bottom: 11px; transition: 0.2s; }
+        .footer-column a:hover { color: white; transform: translateX(2px); }
+
+        .copyright {
+            max-width: 1400px; margin: auto; padding-top: 20px;
+            border-top: 1px solid #4A3457; text-align: center; color: #9C8FAA; font-size: 10px;
+        }
+
+        @media (max-width: 1000px) {
+            nav { padding: 0 5%; }
+            .nav-links { gap: 20px; }
+            .shop-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            .nav-links { display: none; }
+            .shop-header, .toolbar, .shop-grid { padding-left: 5%; padding-right: 5%; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+        }
+
+        @media (max-width: 480px) {
+            nav { height: 70px; }
+            .logo { font-size: 18px; }
+            .brand-mark { width: 34px; height: 34px; }
+            .signin { display: none; }
+            .shop-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+
+    <script src="js/auth.js"></script>
+
+</head>
+
+<body>
+
+    <!-- NAV -->
+
+    <nav>
+
+        <a href="index.html" class="brand">
+            <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="60" height="60" rx="16" fill="#3B1656"/>
+                <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25" stroke="#2A0F3F" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <rect x="18" y="24" width="28" height="24" rx="5" fill="#F5A623"/>
+                <circle cx="27.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <circle cx="36.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <path d="M27 40 Q32 43.5 37 40" stroke="#2A0F3F" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24" stroke="#F5A623" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span class="logo">LubosMart</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="shop.html" class="active">Shop</a></li>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="sell-with-us.html">Sell with us</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-link" aria-label="View cart">
+                🛒
+                <span class="cart-badge" id="cartCount">0</span>
+            </a>
+            <a href="login.html" class="signin" id="authLink">Sign in</a>
+            <a href="shop.html" class="start-btn">Start shopping</a>
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <section class="shop-header">
+        <h1>Shop the Marketplace</h1>
+        <p>Fresh finds from verified local sellers across every category.</p>
+    </section>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <div class="filter-bar" id="filterBar">
+            <button class="filter-chip active" data-category="All">All</button>
+            <button class="filter-chip" data-category="Fashion">Fashion</button>
+            <button class="filter-chip" data-category="Electronics">Electronics</button>
+            <button class="filter-chip" data-category="Beauty">Beauty</button>
+            <button class="filter-chip" data-category="Home">Home & Living</button>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search products...">
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCT GRID -->
+
+    <div class="shop-grid" id="shopGrid">
+
+        <!-- Products are injected by script below -->
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+                <a href="index.html" class="brand">
+                    <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="60" height="60" rx="16" fill="#F5A623"/>
+                        <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25" stroke="#DB8E10" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <rect x="18" y="24" width="28" height="24" rx="5" fill="#3B1656"/>
+                        <circle cx="27.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <circle cx="36.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <path d="M27 40 Q32 43.5 37 40" stroke="#F5A623" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                        <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24" stroke="#3B1656" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <span class="logo">LubosMart</span>
+                </a>
+                <p>A modern neighborhood marketplace that makes shopping from local Filipino sellers simple, reliable, and close to home.</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>SHOP</h3>
+                <a href="shop.html">Products</a>
+                <a href="index.html#categories">Categories</a>
+                <a href="index.html#deals">Deals</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>ACCOUNT</h3>
+                <a href="login.html">Sign in</a>
+                <a href="register.html">Register</a>
+                <a href="cart.html">My Cart</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>SUPPORT</h3>
+                <a href="contact.html">Contact Us</a>
+                <a href="faqs.html">FAQs</a>
+                <a href="terms.html">Terms & Conditions</a>
+            </div>
+
+        </div>
+
+        <div class="copyright">© 2026 LubosMart. All Rights Reserved.</div>
+
+    </footer>
+
+
+    <!-- STOREFRONT (auth link, cart badge, add-to-cart) -->
+
+    <script src="assets/js/valora-storefront.js"></script>
+
+    <script>
+
+        const SHOP_PRODUCTS = [
+            { name: "Classic Everyday Sneakers", category: "Fashion", price: 1299, rating: 5, tag: "FEATURED", initial: "F" },
+            { name: "Denim Jacket", category: "Fashion", price: 1799, rating: 4, tag: "NEW", initial: "F" },
+            { name: "Everyday Tote Bag", category: "Fashion", price: 899, rating: 4, tag: "POPULAR", initial: "F" },
+            { name: "Minimal Leather Bag", category: "Fashion", price: 1499, rating: 4, tag: "NEW", initial: "A" },
+            { name: "Wireless Headphones", category: "Electronics", price: 899, rating: 5, tag: "POPULAR", initial: "E" },
+            { name: "Smart Watch", category: "Electronics", price: 1999, rating: 5, tag: "FEATURED", initial: "E" },
+            { name: "Portable Power Bank", category: "Electronics", price: 599, rating: 4, tag: "NEW", initial: "E" },
+            { name: "Bluetooth Speaker", category: "Electronics", price: 1099, rating: 5, tag: "POPULAR", initial: "E" },
+            { name: "Vitamin C Serum", category: "Beauty", price: 449, rating: 5, tag: "POPULAR", initial: "B" },
+            { name: "Matte Lipstick Set", category: "Beauty", price: 599, rating: 4, tag: "NEW", initial: "B" },
+            { name: "Ceramic Table Lamp", category: "Home", price: 999, rating: 4, tag: "FEATURED", initial: "H" },
+            { name: "Cozy Throw Blanket", category: "Home", price: 749, rating: 5, tag: "POPULAR", initial: "H" }
+        ];
+
+        const grid = document.getElementById("shopGrid");
+        const filterBar = document.getElementById("filterBar");
+        const searchInput = document.getElementById("searchInput");
+
+        let activeCategory = "All";
+
+        function formatPrice(n) {
+            return "₱" + n.toLocaleString("en-PH");
+        }
+
+        function renderProducts() {
+
+            const query = searchInput.value.trim().toLowerCase();
+
+            const filtered = SHOP_PRODUCTS.filter(p => {
+                const matchesCategory = activeCategory === "All" || p.category === activeCategory;
+                const matchesQuery = !query || p.name.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="no-results">No products match your search. Try a different category or keyword.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                <article class="product">
+                    <div class="product-image">
+                        <div class="image-placeholder">${p.initial}</div>
+                        <div class="product-tag">${p.tag}</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${p.category}</div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="rating">${"★".repeat(p.rating)}${"☆".repeat(5 - p.rating)}</div>
+                        <div class="product-bottom">
+                            <div class="price">${formatPrice(p.price)}</div>
+                            <button class="add-btn" data-add-to-cart data-name="${p.name}" data-price="${formatPrice(p.price)}">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+            `).join("");
+
+            // Add-to-cart clicks are handled by the delegated listener
+            // in assets/js/valora-storefront.js — no need to re-wire here.
+        }
+
+        filterBar.addEventListener("click", function (event) {
+            const chip = event.target.closest(".filter-chip");
+            if (!chip) return;
+
+            filterBar.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+
+            activeCategory = chip.getAttribute("data-category");
+            renderProducts();
+        });
+
+        searchInput.addEventListener("input", renderProducts);
+
+        // Pre-select category from ?category= query param (used by homepage category cards)
+        (function initFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const category = params.get("category");
+
+            if (category) {
+                const chip = filterBar.querySelector(`[data-category="${category}"]`);
+                if (chip) {
+                    filterBar.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+                    chip.classList.add("active");
+                    activeCategory = category;
+                }
+            }
+        })();
+
+        renderProducts();
+
+    </script>
+
+</body>
+</html>

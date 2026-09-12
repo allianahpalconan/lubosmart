@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LubosMart | Login</title>
+
+    <!-- Authentication -->
+    <script src="js/auth.js"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            background: #F3EEFA;
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .login-container {
+
+            width: 900px;
+
+            min-height: 520px;
+
+            background: white;
+
+            display: flex;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 20px 50px rgba(43, 15, 63, 0.14);
+        }
+
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .login-left {
+
+            width: 45%;
+
+            /* LUBOSMART VIOLET OMBRE */
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #2A0F3F 0%,
+                    #3B1656 35%,
+                    #5A2C82 60%,
+                    #6B3FA0 80%,
+                    #8659B8 100%
+                );
+
+            color: white;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            padding: 55px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* Decorative circle */
+
+        .login-left::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            border-radius: 50%;
+
+            background: rgba(245, 166, 35, 0.10);
+
+            top: -80px;
+
+            left: -70px;
+        }
+
+
+        .login-left::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 320px;
+
+            height: 320px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.07);
+
+            right: -150px;
+
+            bottom: -130px;
+        }
+
+
+        .login-left > * {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 65px;
+        }
+
+
+        .brand-mark {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            box-shadow: 0 6px 16px rgba(0,0,0,.18);
+        }
+
+
+        .brand-name {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            color: #ffffff;
+        }
+
+
+        .login-left h1 {
+
+            font-size: 36px;
+
+            line-height: 1.2;
+
+            margin-bottom: 17px;
+
+            color: #ffffff;
+        }
+
+
+        .login-left p {
+
+            color: #E4D7F0;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            max-width: 300px;
+        }
+
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .login-right {
+
+            width: 55%;
+
+            padding: 60px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        .login-right h2 {
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+            color: #221331;
+        }
+
+
+        .subtitle {
+
+            color: #88818c;
+
+            font-size: 12px;
+
+            margin-bottom: 35px;
+        }
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .input-group {
+
+            margin-bottom: 20px;
+
+            position: relative;
+        }
+
+
+        .input-group label {
+
+            display: block;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+            color: #403747;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .input-wrapper i.input-icon {
+
+            position: absolute;
+
+            left: 14px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #9a91a2;
+
+            font-size: 13px;
+
+            pointer-events: none;
+        }
+
+
+        .input-group input {
+
+            width: 100%;
+
+            padding: 13px 42px 13px 40px;
+
+            border: 1px solid #E9E2F0;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 12px;
+
+            color: #302936;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+
+        .input-group input::placeholder {
+
+            color: #aaa3ae;
+        }
+
+
+        .input-group input:focus {
+
+            border-color: #3B1656;
+
+            box-shadow:
+                0 0 0 3px rgba(59, 22, 86, 0.10);
+        }
+
+
+        /* Password eye */
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 13px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #99919f;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            padding: 4px;
+        }
+
+
+        .password-toggle:hover {
+
+            color: #3B1656;
+        }
+
+
+        /* =========================
+           FORGOT PASSWORD
+        ========================= */
+
+        .forgot {
+
+            display: block;
+
+            text-align: right;
+
+            color: #3B1656;
+
+            font-size: 11px;
+
+            margin-top: -5px;
+
+            margin-bottom: 25px;
+
+            text-decoration: none;
+        }
+
+
+        .forgot:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #F5A623;
+
+            color: #2A0F3F;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+        }
+
+
+        .login-button:hover {
+
+            background: #DB8E10;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 6px 15px rgba(219, 142, 16, 0.30);
+        }
+
+
+        .login-button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================
+           REGISTER
+        ========================= */
+
+        .register {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            font-size: 11px;
+
+            color: #77707b;
+        }
+
+
+        .register a {
+
+            color: #3B1656;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            margin-left: 3px;
+        }
+
+
+        .register a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           BACK HOME
+        ========================= */
+
+        .back-home {
+
+            text-align: center;
+
+            margin-top: 12px;
+        }
+
+
+        .back-home a {
+
+            color: #817884;
+
+            font-size: 11px;
+
+            text-decoration: none;
+        }
+
+
+        .back-home a:hover {
+
+            color: #3B1656;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .error-message {
+
+            display: none;
+
+            background: #fff2f2;
+
+            border: 1px solid #f1cccc;
+
+            color: #b33131;
+
+            padding: 10px 12px;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            body {
+
+                padding: 15px;
+            }
+
+
+            .login-container {
+
+                width: 100%;
+
+                flex-direction: column;
+
+                min-height: auto;
+
+                border-radius: 12px;
+            }
+
+
+            .login-left,
+            .login-right {
+
+                width: 100%;
+            }
+
+
+            .login-left {
+
+                padding: 35px;
+
+                min-height: 250px;
+
+                justify-content: center;
+            }
+
+
+            .brand {
+
+                margin-bottom: 30px;
+            }
+
+
+            .brand-mark {
+
+                width: 36px;
+
+                height: 36px;
+            }
+
+
+            .brand-name {
+
+                font-size: 19px;
+            }
+
+
+            .login-left h1 {
+
+                font-size: 29px;
+            }
+
+
+            .login-left p {
+
+                font-size: 12px;
+            }
+
+
+            .login-right {
+
+                padding: 35px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         LOGIN CONTAINER
+    ========================= -->
+
+    <div class="login-container">
+
+
+        <!-- =========================
+             LEFT SIDE
+        ========================= -->
+
+        <div class="login-left">
+
+            <div class="brand">
+
+                <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="60" height="60" rx="16" fill="#F5A623"/>
+                    <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25"
+                          stroke="#DB8E10" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <rect x="18" y="24" width="28" height="24" rx="5" fill="#3B1656"/>
+                    <circle cx="27.5" cy="34" r="2.4" fill="#F5A623"/>
+                    <circle cx="36.5" cy="34" r="2.4" fill="#F5A623"/>
+                    <path d="M27 40 Q32 43.5 37 40" stroke="#F5A623" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                    <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24"
+                          stroke="#3B1656" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                </svg>
+
+                <span class="brand-name">LubosMart</span>
+
+            </div>
+
+
+            <h1>
+                Welcome Back.
+            </h1>
+
+
+            <p>
+                Sign in to your LubosMart account
+                and continue your shopping journey.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             RIGHT SIDE
+        ========================= -->
+
+        <div class="login-right">
+
+
+            <h2>
+                Sign In
+            </h2>
+
+
+            <p class="subtitle">
+                Enter your account details below.
+            </p>
+
+
+            <!-- Error Message -->
+
+            <div
+                id="errorMessage"
+                class="error-message">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <span id="errorText">
+                    Invalid email or password.
+                </span>
+
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form onsubmit="loginUser(event)">
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label>
+                        EMAIL ADDRESS
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-regular fa-envelope input-icon"></i>
+
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label>
+                        PASSWORD
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-lock input-icon"></i>
+
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            aria-label="Show password">
+
+                            <i
+                                class="fa-regular fa-eye"
+                                id="eyeIcon">
+                            </i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORGOT PASSWORD -->
+
+                <a
+                    href="#"
+                    class="forgot"
+                    onclick="forgotPassword(event)">
+
+                    Forgot password?
+
+                </a>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-button">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    LOGIN
+
+                </button>
+
+
+            </form>
+
+
+            <!-- REGISTER -->
+
+            <p class="register">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Create one
+                </a>
+
+            </p>
+
+
+            <!-- BACK HOME -->
+
+            <div class="back-home">
+
+                <a href="index.html">
+                    ← Back to LubosMart
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        function loginUser(event) {
+
+            event.preventDefault();
+
+
+            const form = event.target;
+
+
+            const email =
+                form.querySelector(
+                    'input[type="email"]'
+                ).value.trim();
+
+
+            const password =
+                form.querySelector(
+                    'input[type="password"]'
+                ).value;
+
+
+            const errorBox =
+                document.getElementById(
+                    "errorMessage"
+                );
+
+
+            const errorText =
+                document.getElementById(
+                    "errorText"
+                );
+
+
+            /*
+                Use the existing
+                VALORA authentication system.
+            */
+
+            if (typeof valoraLogin !== "function") {
+
+                errorText.textContent =
+                    "Authentication system could not be loaded.";
+
+                errorBox.style.display = "block";
+
+                return;
+            }
+
+
+            const result =
+                valoraLogin(
+                    email,
+                    password
+                );
+
+
+            if (!result.ok) {
+
+                errorText.textContent =
+                    result.message ||
+                    "Invalid email or password.";
+
+                errorBox.style.display =
+                    "block";
+
+                return;
+            }
+
+
+            /*
+                Successful login
+                → redirect based on role
+            */
+
+            errorBox.style.display =
+                "none";
+
+
+            if (result.role === "seller") {
+
+                window.location.href =
+                    "seller-dashboard.html";
+
+            }
+
+            else {
+
+                window.location.href =
+                    "buyer-dashboard.html";
+
+            }
+
+        }
+
+
+        /* =========================
+           SHOW / HIDE PASSWORD
+        ========================= */
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById(
+                    "password"
+                );
+
+
+            const icon =
+                document.getElementById(
+                    "eyeIcon"
+                );
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                icon.classList.remove(
+                    "fa-eye"
+                );
+
+                icon.classList.add(
+                    "fa-eye-slash"
+                );
+
+            }
+
+            else {
+
+                password.type = "password";
+
+                icon.classList.remove(
+                    "fa-eye-slash"
+                );
+
+                icon.classList.add(
+                    "fa-eye"
+                );
+
+            }
+
+        }
+
+
+        /* =========================
+           FORGOT PASSWORD
+        ========================= */
+
+        function forgotPassword(event) {
+
+            event.preventDefault();
+
+            alert(
+                "Please contact the LubosMart administrator to reset your password."
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

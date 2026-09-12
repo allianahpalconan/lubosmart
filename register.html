@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LubosMart | Create Account</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F3EEFA;
+            color: #221331;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .register-container {
+            width: 900px;
+            min-height: 570px;
+
+            background: #ffffff;
+
+            display: flex;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(43, 15, 63, 0.16);
+        }
+
+
+        /* =========================
+           LEFT / BRAND SIDE
+        ========================= */
+
+        .brand-section {
+            width: 45%;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #2A0F3F 0%,
+                    #3B1656 35%,
+                    #5A2C82 60%,
+                    #6B3FA0 80%,
+                    #8659B8 100%
+                );
+
+            color: white;
+
+            padding: 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        /* Decorative circles */
+
+        .brand-section::before {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            background: rgba(245,166,35,0.10);
+
+            top: -100px;
+            right: -100px;
+        }
+
+        .brand-section::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.05);
+
+            bottom: -100px;
+            left: -90px;
+        }
+
+
+        /* Keep content above circles */
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .brand-logo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 26px;
+        }
+
+
+        .brand-mark {
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            box-shadow: 0 6px 16px rgba(0,0,0,.18);
+        }
+
+
+        .brand-section h1 {
+            font-size: 22px;
+
+            letter-spacing: 1px;
+
+            font-weight: 700;
+
+            color: #ffffff;
+        }
+
+
+        .brand-section p {
+            color: rgba(255,255,255,0.82);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            max-width: 300px;
+        }
+
+
+        /* =========================
+           RIGHT / FORM SIDE
+        ========================= */
+
+        .form-section {
+            width: 55%;
+
+            padding: 45px 50px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .form-section h2 {
+            font-size: 27px;
+
+            color: #221331;
+
+            margin-bottom: 7px;
+        }
+
+
+        .subtitle {
+            color: #817884;
+
+            font-size: 13px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           INPUT ROW
+        ========================= */
+
+        .input-row {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 14px;
+        }
+
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+
+        .input-group label {
+            display: block;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #51475a;
+
+            margin-bottom: 7px;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        /* =========================
+           INPUT BOX
+        ========================= */
+
+        .input-box {
+            position: relative;
+        }
+
+
+        .input-box i.input-icon {
+            position: absolute;
+
+            left: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #927aa3;
+
+            font-size: 13px;
+
+            pointer-events: none;
+        }
+
+
+        .input-group input {
+            width: 100%;
+
+            height: 43px;
+
+            padding: 0 40px;
+
+            border: 1px solid #E9E2F0;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            color: #221331;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+
+        .input-group input::placeholder {
+            color: #aaa2ad;
+        }
+
+
+        .input-group input:focus {
+            border-color: #3B1656;
+
+            box-shadow:
+                0 0 0 3px rgba(59,22,86,0.10);
+        }
+
+
+        /* =========================
+           PASSWORD TOGGLE
+        ========================= */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: none;
+
+            color: #927aa3;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            padding: 3px;
+        }
+
+
+        .password-toggle:hover {
+            color: #3B1656;
+        }
+
+
+        /* =========================
+           ACCOUNT TYPE
+        ========================= */
+
+        .account-title {
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #51475a;
+
+            margin-top: 2px;
+
+            margin-bottom: 9px;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .account-types {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .account-type {
+            position: relative;
+
+            border: 1px solid #E9E2F0;
+
+            border-radius: 8px;
+
+            padding: 12px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            font-weight: 500;
+
+            cursor: pointer;
+
+            color: #5d5362;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+
+        .account-type:hover {
+            border-color: #3B1656;
+
+            color: #3B1656;
+
+            background: #FAF7FC;
+        }
+
+
+        .account-type input {
+            margin-right: 6px;
+
+            accent-color: #3B1656;
+        }
+
+
+        .account-type:has(input:checked) {
+            border-color: #3B1656;
+
+            color: #3B1656;
+
+            background: #F1E9FA;
+
+            box-shadow:
+                0 0 0 2px rgba(59,22,86,0.06);
+        }
+
+
+        /* =========================
+           REGISTER BUTTON
+        ========================= */
+
+        .register-button {
+            width: 100%;
+
+            height: 45px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #F5A623;
+
+            color: #2A0F3F;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+            box-shadow:
+                0 7px 18px rgba(219,142,16,0.25);
+        }
+
+
+        .register-button:hover {
+            background: #DB8E10;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 9px 22px rgba(219,142,16,0.32);
+        }
+
+
+        .register-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================
+           LOGIN LINK
+        ========================= */
+
+        .login-text {
+            text-align: center;
+
+            margin-top: 18px;
+
+            font-size: 11px;
+
+            color: #817884;
+        }
+
+
+        .login-text a {
+            color: #3B1656;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           BACK HOME
+        ========================= */
+
+        .back-home {
+            text-align: center;
+
+            margin-top: 12px;
+        }
+
+
+        .back-home a {
+            color: #817884;
+
+            font-size: 11px;
+
+            text-decoration: none;
+        }
+
+
+        .back-home a:hover {
+            color: #3B1656;
+        }
+
+
+        /* =========================
+           ERROR TEXT
+        ========================= */
+
+        .form-error {
+            display: none;
+
+            background: #fff2f2;
+
+            border: 1px solid #f1cccc;
+
+            color: #b33131;
+
+            padding: 10px 12px;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            body {
+                padding: 20px;
+            }
+
+
+            .register-container {
+                width: 100%;
+
+                min-height: auto;
+
+                flex-direction: column;
+
+                border-radius: 14px;
+            }
+
+
+            .brand-section {
+                width: 100%;
+
+                padding: 40px 30px;
+
+                text-align: center;
+            }
+
+
+            .brand-logo {
+                justify-content: center;
+            }
+
+
+            .brand-section p {
+                margin: auto;
+            }
+
+
+            .form-section {
+                width: 100%;
+
+                padding: 35px 30px;
+            }
+
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            .brand-section h1 {
+                font-size: 19px;
+            }
+
+
+            .brand-mark {
+                width: 36px;
+
+                height: 36px;
+            }
+
+
+            .form-section {
+                padding: 30px 22px;
+            }
+
+
+            .account-types {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="register-container">
+
+
+        <!-- =========================
+             BRAND SIDE
+        ========================= -->
+
+        <div class="brand-section">
+
+            <div class="brand-content">
+
+                <div class="brand-logo">
+
+                    <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="60" height="60" rx="16" fill="#F5A623"/>
+                        <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25"
+                              stroke="#DB8E10" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <rect x="18" y="24" width="28" height="24" rx="5" fill="#3B1656"/>
+                        <circle cx="27.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <circle cx="36.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <path d="M27 40 Q32 43.5 37 40" stroke="#F5A623" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                        <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24"
+                              stroke="#3B1656" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                    </svg>
+
+                    <h1>LubosMart</h1>
+
+                </div>
+
+                <p>
+                    Join LubosMart and discover a better
+                    way to shop, sell, and connect.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             REGISTER FORM
+        ========================= -->
+
+        <div class="form-section">
+
+            <h2>Create your account</h2>
+
+            <p class="subtitle">
+                Enter your details to get started.
+            </p>
+
+
+            <div class="form-error" id="formError"></div>
+
+
+            <form onsubmit="registerUser(event)">
+
+
+                <!-- FIRST + LAST NAME -->
+
+                <div class="input-row">
+
+                    <div class="input-group">
+
+                        <label>FIRST NAME</label>
+
+                        <div class="input-box">
+
+                            <i class="fa-regular fa-user input-icon"></i>
+
+                            <input
+                                type="text"
+                                placeholder="First name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>LAST NAME</label>
+
+                        <div class="input-box">
+
+                            <i class="fa-regular fa-user input-icon"></i>
+
+                            <input
+                                type="text"
+                                placeholder="Last name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label>EMAIL ADDRESS</label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-envelope input-icon"></i>
+
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label>PASSWORD</label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock input-icon"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password', 'passwordIcon')"
+                        >
+                            <i
+                                class="fa-regular fa-eye"
+                                id="passwordIcon"
+                            ></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="input-group">
+
+                    <label>CONFIRM PASSWORD</label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock input-icon"></i>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('confirmPassword', 'confirmPasswordIcon')"
+                        >
+                            <i
+                                class="fa-regular fa-eye"
+                                id="confirmPasswordIcon"
+                            ></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT TYPE -->
+
+                <div class="account-title">
+                    ACCOUNT TYPE
+                </div>
+
+
+                <div class="account-types">
+
+                    <label class="account-type">
+
+                        <input
+                            type="radio"
+                            name="accountType"
+                            value="buyer"
+                            checked
+                            required
+                        >
+
+                        Buyer
+
+                    </label>
+
+
+                    <label class="account-type">
+
+                        <input
+                            type="radio"
+                            name="accountType"
+                            value="seller"
+                        >
+
+                        Seller
+
+                    </label>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    CREATE ACCOUNT
+                </button>
+
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Sign in
+                </a>
+
+            </div>
+
+
+            <!-- BACK HOME -->
+
+            <div class="back-home">
+
+                <a href="index.html">
+                    ← Back to LubosMart
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- AUTH -->
+
+    <script src="js/auth.js"></script>
+
+
+    <script>
+
+        function registerUser(event) {
+
+            event.preventDefault();
+
+            const form = event.target;
+
+            const inputs = form.querySelectorAll("input:not([type=radio])");
+
+            const firstName = inputs[0].value.trim();
+
+            const lastName = inputs[1].value.trim();
+
+            const email = inputs[2].value.trim();
+
+            const password = inputs[3].value;
+
+            const confirmPassword = inputs[4].value;
+
+            const role =
+                form.querySelector(
+                    'input[name="accountType"]:checked'
+                )?.value;
+
+            const errorBox = document.getElementById("formError");
+
+            function showError(message) {
+                errorBox.textContent = message;
+                errorBox.style.display = "block";
+            }
+
+
+            /* CHECK PASSWORD */
+
+            if (password !== confirmPassword) {
+
+                showError("Passwords do not match.");
+
+                return;
+            }
+
+
+            /* CHECK ACCOUNT TYPE */
+
+            if (!role) {
+
+                showError("Please choose Buyer or Seller.");
+
+                return;
+            }
+
+
+            /* REGISTER */
+
+            const result = valoraRegister({
+
+                firstName,
+
+                lastName,
+
+                email,
+
+                password,
+
+                role
+
+            });
+
+
+            if (!result.ok) {
+
+                showError(result.message);
+
+                return;
+            }
+
+            errorBox.style.display = "none";
+
+
+            /* REDIRECT */
+
+            window.location.href =
+                role === "seller"
+                    ? "seller-dashboard.html"
+                    : "buyer-dashboard.html";
+
+        }
+
+
+        /* =========================
+           SHOW / HIDE PASSWORD
+        ========================= */
+
+        function togglePassword(inputId, iconId) {
+
+            const input =
+                document.getElementById(inputId);
+
+            const icon =
+                document.getElementById(iconId);
+
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                icon.classList.remove("fa-eye");
+
+                icon.classList.add("fa-eye-slash");
+
+            } else {
+
+                input.type = "password";
+
+                icon.classList.remove("fa-eye-slash");
+
+                icon.classList.add("fa-eye");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

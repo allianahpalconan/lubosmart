@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LubosMart | Your Neighborhood, Now Online</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =========================================
+           RESET
+           ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           VARIABLES  —  LubosMart brand palette
+           ========================================= */
+
+        :root {
+            --primary: #3B1656;
+            --primary-dark: #2A0F3F;
+            --primary-light: #F1E9FA;
+
+            --accent: #F5A623;
+            --accent-dark: #DB8E10;
+            --accent-light: #FFF3DE;
+
+            --text: #221331;
+            --muted: #746C80;
+
+            --background: #FBFAFC;
+            --hero-bg: #F3EDFB;
+            --white: #FFFFFF;
+
+            --border: #E9E2F0;
+
+            --shadow: 0 14px 34px rgba(43, 15, 63, 0.10);
+        }
+
+
+        /* =========================================
+           GLOBAL
+           ========================================= */
+
+        body {
+            font-family: 'Inter', sans-serif;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            line-height: 1.5;
+        }
+
+
+        a {
+            text-decoration: none;
+
+            color: inherit;
+        }
+
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================================
+           ANNOUNCEMENT BAR
+           ========================================= */
+
+        .announcement {
+            background: var(--primary-dark);
+
+            color: #E9DEF2;
+
+            font-size: 12.5px;
+
+            padding: 10px 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+        }
+
+
+        .announcement strong {
+            color: var(--accent);
+
+            font-weight: 700;
+        }
+
+
+        .announcement .region {
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #C9BBD6;
+
+            font-weight: 500;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           NAVBAR
+           ========================================= */
+
+        nav {
+            height: 78px;
+
+            padding: 0 7%;
+
+            background: var(--white);
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+        }
+
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .brand-mark {
+            width: 46px;
+
+            height: 46px;
+
+            flex-shrink: 0;
+
+            border-radius: 14px;
+
+            box-shadow: 0 6px 16px rgba(43,15,63,.18);
+        }
+
+
+        .logo {
+            font-family: 'Baloo 2', 'Inter', sans-serif;
+
+            color: var(--primary) !important;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 34px;
+
+            list-style: none;
+        }
+
+
+        .nav-links a {
+            color: #524A5E;
+
+            font-size: 13.5px;
+
+            font-weight: 500;
+
+            position: relative;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+
+        .nav-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .cart-link {
+            position: relative;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            color: var(--primary) !important;
+
+            transition: 0.2s;
+        }
+
+
+        .cart-link:hover {
+            background: var(--primary-light);
+        }
+
+
+        .cart-badge {
+            position: absolute;
+
+            top: -4px;
+
+            right: -4px;
+
+            min-width: 17px;
+
+            height: 17px;
+
+            padding: 0 4px;
+
+            border-radius: 999px;
+
+            background: var(--accent);
+
+            color: var(--primary-dark);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .signin {
+            color: var(--text);
+
+            font-size: 13.5px;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+
+            white-space: nowrap;
+        }
+
+
+        .signin:hover {
+            color: var(--primary);
+        }
+
+
+        .start-btn {
+            padding: 11px 20px;
+
+            background: var(--accent) !important;
+
+            color: var(--primary-dark) !important;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        .start-btn:hover {
+            background: var(--accent-dark) !important;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           HERO
+           ========================================= */
+
+        .hero {
+            min-height: 620px;
+
+            padding: 80px 7% 110px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 0.95fr;
+
+            align-items: center;
+
+            gap: 60px;
+
+            background: var(--hero-bg);
+        }
+
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+
+        .eyebrow {
+            display: inline-block;
+
+            margin-bottom: 22px;
+
+            color: var(--primary);
+
+            font-size: 12.5px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.4px;
+        }
+
+
+        .hero h1 {
+            font-family: 'Baloo 2', 'Inter', sans-serif;
+
+            font-size: 56px;
+
+            line-height: 1.08;
+
+            letter-spacing: -1px;
+
+            color: var(--primary-dark);
+
+            margin-bottom: 24px;
+        }
+
+
+        .hero h1 .accent-word {
+            color: var(--accent) !important;
+        }
+
+
+        .hero p {
+            max-width: 480px;
+
+            margin-bottom: 34px;
+
+            color: var(--muted);
+
+            font-size: 16px;
+
+            line-height: 1.75;
+        }
+
+
+        .hero-buttons {
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+
+            margin-bottom: 30px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .primary-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 15px 24px;
+
+            background: var(--primary) !important;
+
+            color: white;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        .primary-btn:hover {
+            background: var(--primary-dark) !important;
+
+            transform: translateY(-1px);
+        }
+
+
+        .text-link {
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: var(--primary);
+
+            padding-bottom: 3px;
+
+            border-bottom: 2px solid var(--accent);
+
+            transition: 0.2s;
+        }
+
+
+        .text-link:hover {
+            color: var(--accent-dark);
+        }
+
+
+        .trust-row {
+            display: flex;
+
+            align-items: center;
+
+            gap: 26px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .trust-row span {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #574E63;
+
+            font-size: 12.5px;
+
+            font-weight: 600;
+        }
+
+
+        .trust-row span::before {
+            content: "✓";
+
+            color: var(--accent-dark);
+
+            font-weight: 800;
+        }
+
+
+        /* =========================================
+           HERO VISUAL — floating card stack
+           ========================================= */
+
+        .hero-visual {
+            position: relative;
+
+            min-height: 460px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .hero-blob {
+            position: absolute;
+
+            width: 380px;
+
+            height: 380px;
+
+            border-radius: 46% 54% 60% 40% / 50% 45% 55% 50%;
+
+            background: linear-gradient(150deg, #5A2C82 0%, #7C4AA6 100%);
+
+            opacity: 0.9;
+
+            right: 10%;
+        }
+
+
+        .main-card {
+            position: relative;
+
+            width: 270px;
+
+            background: var(--white);
+
+            border-radius: 16px;
+
+            box-shadow: 0 24px 50px rgba(43,15,63,.22);
+
+            padding: 18px;
+
+            z-index: 3;
+
+            transform: rotate(2deg);
+        }
+
+
+        .main-card .card-brand {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 14px;
+        }
+
+
+        .main-card .card-brand-name {
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: var(--primary);
+        }
+
+
+        .main-card .card-icons {
+            display: flex;
+
+            gap: 8px;
+
+            color: #B9AECB;
+
+            font-size: 13px;
+        }
+
+
+        .promo-block {
+            background: var(--primary);
+
+            color: white;
+
+            border-radius: 12px;
+
+            padding: 16px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .promo-block strong {
+            display: block;
+
+            font-size: 15px;
+
+            line-height: 1.3;
+
+            margin-bottom: 6px;
+        }
+
+
+        .promo-block span {
+            display: inline-block;
+
+            background: var(--accent);
+
+            color: var(--primary-dark);
+
+            font-size: 10.5px;
+
+            font-weight: 700;
+
+            padding: 4px 8px;
+
+            border-radius: 5px;
+        }
+
+
+        .popular-label {
+            font-size: 10.5px;
+
+            font-weight: 700;
+
+            color: #8A8093;
+
+            margin-bottom: 8px;
+        }
+
+
+        .thumb-row {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 8px;
+        }
+
+
+        .thumb {
+            height: 46px;
+
+            border-radius: 8px;
+        }
+
+
+        .thumb:nth-child(1) { background: var(--accent-light); border: 1px solid #F0D9A5; }
+        .thumb:nth-child(2) { background: var(--primary-light); border: 1px solid #D9C6EE; }
+        .thumb:nth-child(3) { background: #E4F3EC; border: 1px solid #BBE1CC; }
+
+
+        .float-card {
+            position: absolute;
+
+            background: white;
+
+            border-radius: 12px;
+
+            box-shadow: var(--shadow);
+
+            padding: 12px 16px;
+
+            z-index: 4;
+
+            font-size: 12px;
+        }
+
+
+        .float-card.status {
+            top: 12%;
+
+            left: 2%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-weight: 600;
+        }
+
+
+        .float-card.status .dot {
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #33B36B;
+
+            flex-shrink: 0;
+        }
+
+
+        .float-card.status small {
+            display: block;
+
+            color: var(--muted);
+
+            font-weight: 500;
+
+            margin-top: 2px;
+        }
+
+
+        .float-card.order {
+            bottom: 6%;
+
+            right: 4%;
+
+            font-weight: 600;
+        }
+
+
+        .float-card.order small {
+            display: block;
+
+            color: var(--muted);
+
+            font-weight: 500;
+
+            margin-top: 2px;
+        }
+
+
+        /* =========================================
+           SECTION
+           ========================================= */
+
+        .section {
+            padding: 90px 7%;
+        }
+
+
+        .section-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: end;
+
+            margin-bottom: 34px;
+        }
+
+
+        .section-header h2 {
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 28px;
+
+            letter-spacing: -0.4px;
+
+            color: var(--primary-dark);
+
+            margin-bottom: 7px;
+        }
+
+
+        .section-header p {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        .view-all {
+            color: var(--primary) !important;
+
+            font-size: 12.5px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+
+        .view-all:hover {
+            color: var(--accent-dark);
+        }
+
+
+        /* =========================================
+           CATEGORIES
+           ========================================= */
+
+        .categories {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .category {
+            min-height: 175px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            transition: 0.25s;
+
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+
+        .category:hover {
+            transform: translateY(-4px);
+
+            border-color: #D8C3EC;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .category-icon {
+            width: 54px;
+
+            height: 54px;
+
+            margin-bottom: 16px;
+
+            border-radius: 50%;
+
+            background: var(--primary-light);
+
+            color: var(--primary) !important;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        .category h3 {
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .category p {
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           FEATURED PRODUCTS
+           ========================================= */
+
+        .products {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .product {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            transition: 0.25s;
+
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+
+        .product:hover {
+            transform: translateY(-5px);
+
+            box-shadow: var(--shadow);
+        }
+
+
+        .product-image {
+            height: 230px;
+
+            background: var(--primary-light);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+        }
+
+
+        .image-placeholder {
+            width: 75px;
+
+            height: 75px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: var(--primary) !important;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            box-shadow: 0 8px 20px rgba(43,15,63,0.06);
+        }
+
+
+        .product-tag {
+            position: absolute;
+
+            top: 14px;
+
+            left: 14px;
+
+            padding: 5px 9px;
+
+            background: var(--accent);
+
+            color: var(--primary-dark) !important;
+
+            border-radius: 5px;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .product-info {
+            padding: 18px;
+        }
+
+
+        .product-category {
+            color: #9B90A8;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .product-name {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 9px;
+        }
+
+
+        .rating {
+            color: var(--accent-dark);
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .product-bottom {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .price {
+            color: var(--primary) !important;
+
+            font-size: 15px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           ADD TO CART
+           ========================================= */
+
+        .add-btn {
+            padding: 7px 10px;
+
+            min-width: 110px;
+
+            min-height: 38px;
+
+            border: 1px solid #D8C3EC;
+
+            border-radius: 6px;
+
+            color: var(--primary) !important;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+
+            display: inline-flex !important;
+
+            align-items: center !important;
+
+            justify-content: center !important;
+
+            text-align: center !important;
+
+            gap: 5px;
+
+            white-space: nowrap;
+
+            background: white;
+
+            cursor: pointer;
+        }
+
+
+        .add-btn:hover {
+            background: var(--primary);
+
+            border-color: var(--primary);
+
+            color: white !important;
+        }
+
+
+        /* =========================================
+           PROMO
+           ========================================= */
+
+        .promo {
+            margin: 0 7% 90px;
+
+            padding: 48px 55px;
+
+            background: linear-gradient(
+                135deg,
+                #2A0F3F 0%,
+                #3B1656 45%,
+                #6B3FA0 100%
+            ) !important;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 30px;
+
+            color: white;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .promo::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+
+            height: 180px;
+
+            border-radius: 50%;
+
+            background: rgba(245,166,35,.12);
+
+            top: -55px;
+
+            right: -45px;
+        }
+
+
+        .promo::after {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+
+            height: 120px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.05);
+
+            bottom: -45px;
+
+            left: -30px;
+        }
+
+
+        .promo > * {
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .promo h2 {
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 28px;
+
+            letter-spacing: -0.4px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .promo p {
+            color: #E4D7F0;
+
+            font-size: 12.5px;
+        }
+
+
+        .promo-btn {
+            padding: 13px 22px;
+
+            background: var(--accent);
+
+            color: var(--primary-dark);
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+
+        .promo-btn:hover {
+            background: var(--accent-dark);
+        }
+
+
+        /* =========================================
+           LUBOSMART DIFFERENCE
+           ========================================= */
+
+        .difference {
+            background: white;
+        }
+
+
+        .features {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        .feature {
+            padding: 28px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: var(--background);
+
+            text-align: center;
+
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+
+        .feature-icon {
+            width: 45px;
+
+            height: 45px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            background: var(--primary-light);
+
+            color: var(--primary) !important;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+
+            font-weight: 600;
+        }
+
+
+        .feature h3 {
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .feature p {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           HOW IT WORKS
+           ========================================= */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        .step {
+            padding: 28px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+
+        .step-number {
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: var(--primary);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            margin-bottom: 16px;
+        }
+
+
+        .step h3 {
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .step p {
+            color: var(--muted);
+
+            font-size: 11.5px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           SELL WITH US
+           ========================================= */
+
+        .sell-section {
+            margin: 0 7% 90px;
+
+            padding: 50px 55px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 30px;
+
+            box-shadow: 0 8px 25px rgba(43,15,63,.04);
+        }
+
+
+        .sell-section h2 {
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 26px;
+
+            color: var(--primary-dark);
+
+            margin-bottom: 8px;
+        }
+
+
+        .sell-section p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            max-width: 420px;
+        }
+
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+
+        footer {
+            background: linear-gradient(
+                150deg,
+                #1E0C2E,
+                #3B1656
+            ) !important;
+
+            color: white;
+
+            padding: 65px 7% 25px;
+        }
+
+
+        .footer-grid {
+            max-width: 1400px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+
+            gap: 50px;
+
+            margin-bottom: 50px;
+        }
+
+
+        .footer-brand {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+
+        .footer-brand .brand {
+            gap: 10px;
+        }
+
+
+        .footer-brand .logo {
+            color: white !important;
+        }
+
+
+        .footer-brand p {
+            max-width: 320px;
+
+            color: #C6B9D4;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        .footer-column h3 {
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 18px;
+
+            color: var(--accent);
+        }
+
+
+        .footer-column a {
+            display: block;
+
+            color: #C6B9D4;
+
+            font-size: 12px;
+
+            margin-bottom: 11px;
+
+            transition: 0.2s;
+        }
+
+
+        .footer-column a:hover {
+            color: white;
+
+            transform: translateX(2px);
+        }
+
+
+        .copyright {
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #4A3457;
+
+            text-align: center;
+
+            color: #9C8FAA;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 1000px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+
+            .nav-links {
+                gap: 20px;
+            }
+
+
+            .hero {
+                grid-template-columns: 1fr;
+
+                text-align: center;
+
+                padding: 60px 5% 90px;
+            }
+
+
+            .hero-content {
+                max-width: 700px;
+
+                margin: auto;
+            }
+
+
+            .hero p {
+                margin-left: auto;
+
+                margin-right: auto;
+            }
+
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+
+            .hero-visual {
+                width: 100%;
+
+                max-width: 500px;
+
+                margin: 40px auto 0;
+            }
+
+
+            .trust-row {
+                justify-content: center;
+            }
+
+
+            .categories,
+            .products,
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+
+            .sell-section {
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+                display: none;
+            }
+
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+
+            .announcement {
+                font-size: 11px;
+            }
+
+
+            .section {
+                padding: 65px 5%;
+            }
+
+
+            .promo,
+            .sell-section {
+                margin: 0 5% 65px;
+
+                padding: 38px 28px;
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .section-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .announcement {
+                flex-direction: column;
+
+                gap: 4px;
+
+                text-align: center;
+            }
+
+
+            nav {
+                height: 70px;
+            }
+
+
+            .logo {
+                font-size: 18px;
+            }
+
+
+            .brand-mark {
+                width: 34px;
+
+                height: 34px;
+            }
+
+
+            .signin {
+                display: none;
+            }
+
+
+            .hero {
+                padding: 50px 5% 80px;
+            }
+
+
+            .hero h1 {
+                font-size: 34px;
+
+                letter-spacing: -0.5px;
+            }
+
+
+            .hero-buttons {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                width: 100%;
+            }
+
+
+            .primary-btn {
+                width: 100%;
+            }
+
+
+            .main-card {
+                width: 230px;
+            }
+
+
+            .hero-blob {
+                width: 300px;
+
+                height: 300px;
+            }
+
+
+            .float-card {
+                font-size: 10.5px;
+
+                padding: 9px 12px;
+            }
+
+
+            .categories,
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+
+            .product-image {
+                height: 250px;
+            }
+
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+    <script src="js/auth.js"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         ANNOUNCEMENT BAR
+         ========================================= -->
+
+    <div class="announcement">
+
+        <div>
+            <strong>Welcome to LubosMart</strong> — your neighborhood, now online.
+        </div>
+
+        <div class="region">
+            🇵🇭 Proudly serving local communities
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
+    <nav>
+
+        <a href="index.html" class="brand">
+
+            <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="60" height="60" rx="16" fill="#3B1656"/>
+                <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25"
+                      stroke="#2A0F3F" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <rect x="18" y="24" width="28" height="24" rx="5" fill="#F5A623"/>
+                <circle cx="27.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <circle cx="36.5" cy="34" r="2.4" fill="#2A0F3F"/>
+                <path d="M27 40 Q32 43.5 37 40" stroke="#2A0F3F" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24"
+                      stroke="#F5A623" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            </svg>
+
+            <span class="logo">LubosMart</span>
+
+        </a>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="shop.html">Shop</a>
+            </li>
+
+            <li>
+                <a href="how-it-works.html">How it works</a>
+            </li>
+
+            <li>
+                <a href="sell-with-us.html">Sell with us</a>
+            </li>
+
+            <li>
+                <a href="about.html">About</a>
+            </li>
+
+        </ul>
+
+
+        <div class="nav-actions">
+
+            <a href="cart.html" class="cart-link" aria-label="View cart">
+                🛒
+                <span class="cart-badge" id="cartCount">0</span>
+            </a>
+
+            <a href="login.html" class="signin" id="authLink">Sign in</a>
+
+            <a href="shop.html" class="start-btn">Start shopping</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         HERO
+         ========================================= -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                LOCAL FINDS. SMARTER LIVING.
+            </div>
+
+
+            <h1>
+                Everything you need,
+                <span class="accent-word">closer to home.</span>
+            </h1>
+
+
+            <p>
+                Discover trusted products from local Filipino sellers, enjoy
+                effortless checkout, and follow every order from our store
+                to your door.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="shop.html" class="primary-btn">
+                    Explore the marketplace →
+                </a>
+
+                <a href="register.html" class="text-link">
+                    I'm a seller
+                </a>
+
+            </div>
+
+
+            <div class="trust-row">
+
+                <span>Verified local sellers</span>
+
+                <span>Reliable delivery</span>
+
+                <span>Secure checkout</span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="hero-visual">
+
+            <div class="hero-blob"></div>
+
+            <div class="float-card status">
+                <span class="dot"></span>
+                <div>
+                    Fresh from local shops
+                    <small>Made for your community</small>
+                </div>
+            </div>
+
+
+            <div class="main-card">
+
+                <div class="card-brand">
+                    <span class="card-brand-name">LubosMart</span>
+                    <span class="card-icons">♡ 🔍</span>
+                </div>
+
+                <div class="promo-block">
+                    <strong>Good finds, delivered.</strong>
+                    <span>Up to 25% off nearby</span>
+                </div>
+
+                <div class="popular-label">POPULAR NEAR YOU</div>
+
+                <div class="thumb-row">
+                    <div class="thumb"></div>
+                    <div class="thumb"></div>
+                    <div class="thumb"></div>
+                </div>
+
+            </div>
+
+
+            <div class="float-card order">
+                Order arriving today
+                <small>Rider is 1.2 km away</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         CATEGORIES
+         ========================================= -->
+
+    <section class="section"
+             id="categories">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Shop by Category
+                </h2>
+
+                <p>
+                    Explore our carefully selected categories.
+                </p>
+
+            </div>
+
+
+            <a href="shop.html" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+
+        <div class="categories">
+
+
+            <a href="shop.html?category=Fashion" class="category">
+
+                <div class="category-icon">F</div>
+
+                <h3>Fashion</h3>
+
+                <p>Clothing & Accessories</p>
+
+            </a>
+
+
+
+            <a href="shop.html?category=Electronics" class="category">
+
+                <div class="category-icon">E</div>
+
+                <h3>Electronics</h3>
+
+                <p>Devices & Gadgets</p>
+
+            </a>
+
+
+
+            <a href="shop.html?category=Beauty" class="category">
+
+                <div class="category-icon">B</div>
+
+                <h3>Beauty</h3>
+
+                <p>Beauty & Personal Care</p>
+
+            </a>
+
+
+
+            <a href="shop.html?category=Home" class="category">
+
+                <div class="category-icon">H</div>
+
+                <h3>Home & Living</h3>
+
+                <p>Essentials for Your Home</p>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FEATURED PRODUCTS
+         ========================================= -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Featured Collection
+                </h2>
+
+                <p>
+                    Discover some of our most popular products.
+                </p>
+
+            </div>
+
+
+            <a href="shop.html" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+
+        <div class="products">
+
+
+            <!-- PRODUCT 1 -->
+
+            <article class="product">
+
+                <div class="product-image">
+
+                    <div class="image-placeholder">F</div>
+
+                    <div class="product-tag">FEATURED</div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-category">Fashion</div>
+
+                    <div class="product-name">Classic Everyday Sneakers</div>
+
+                    <div class="rating">★★★★★</div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">₱1,299</div>
+
+                        <button class="add-btn" data-add-to-cart data-name="Classic Everyday Sneakers" data-price="₱1,299">🛒 Add to Cart</button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PRODUCT 2 -->
+
+            <article class="product">
+
+                <div class="product-image">
+
+                    <div class="image-placeholder">E</div>
+
+                    <div class="product-tag">POPULAR</div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-category">Electronics</div>
+
+                    <div class="product-name">Wireless Headphones</div>
+
+                    <div class="rating">★★★★★</div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">₱899</div>
+
+                        <button class="add-btn" data-add-to-cart data-name="Wireless Headphones" data-price="₱899">🛒 Add to Cart</button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PRODUCT 3 -->
+
+            <article class="product">
+
+                <div class="product-image">
+
+                    <div class="image-placeholder">A</div>
+
+                    <div class="product-tag">NEW</div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-category">Accessories</div>
+
+                    <div class="product-name">Minimal Leather Bag</div>
+
+                    <div class="rating">★★★★☆</div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">₱1,499</div>
+
+                        <button class="add-btn" data-add-to-cart data-name="Minimal Leather Bag" data-price="₱1,499">🛒 Add to Cart</button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PRODUCT 4 -->
+
+            <article class="product">
+
+                <div class="product-image">
+
+                    <div class="image-placeholder">E</div>
+
+                    <div class="product-tag">FEATURED</div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-category">Electronics</div>
+
+                    <div class="product-name">Smart Watch</div>
+
+                    <div class="rating">★★★★★</div>
+
+                    <div class="product-bottom">
+
+                        <div class="price">₱1,999</div>
+
+                        <button class="add-btn" data-add-to-cart data-name="Smart Watch" data-price="₱1,999">🛒 Add to Cart</button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PROMOTION
+         ========================================= -->
+
+    <section class="promo"
+             id="deals">
+
+
+        <div>
+
+            <h2>
+                Discover Something New
+            </h2>
+
+            <p>
+                Explore exclusive products and special offers
+                available at LubosMart.
+            </p>
+
+        </div>
+
+
+        <a href="shop.html" class="promo-btn">
+            Shop Now →
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================================
+         LUBOSMART DIFFERENCE
+         ========================================= -->
+
+    <section class="section difference"
+             id="about">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    The LubosMart Difference
+                </h2>
+
+                <p>
+                    Designed around a better neighborhood shopping experience.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">✓</div>
+
+                <h3>Verified Local Sellers</h3>
+
+                <p>Every seller is checked so you shop from people you can trust.</p>
+
+            </div>
+
+
+
+            <div class="feature">
+
+                <div class="feature-icon">🔒</div>
+
+                <h3>Secure Checkout</h3>
+
+                <p>A safe and reliable platform for every transaction.</p>
+
+            </div>
+
+
+
+            <div class="feature">
+
+                <div class="feature-icon">→</div>
+
+                <h3>Reliable Delivery</h3>
+
+                <p>Track your order from checkout to your doorstep.</p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         HOW IT WORKS
+         ========================================= -->
+
+    <section class="section" id="how-it-works">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>How LubosMart Works</h2>
+
+                <p>From browsing to delivery, in three simple steps.</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Browse local shops</h3>
+                <p>Search categories or nearby sellers to find exactly what your neighborhood has to offer.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Checkout securely</h3>
+                <p>Pay with confidence using our protected checkout, built to keep every order safe.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Track your delivery</h3>
+                <p>Watch your order move from the seller's shop to your doorstep in real time.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         SELL WITH US
+         ========================================= -->
+
+    <section class="sell-section" id="sell">
+
+        <div>
+            <h2>Bring your shop to LubosMart</h2>
+            <p>Reach more neighbors, manage orders in one place, and grow your business with a platform built for local sellers.</p>
+        </div>
+
+        <a href="register.html" class="primary-btn">Become a seller →</a>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer>
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="brand">
+
+                    <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="60" height="60" rx="16" fill="#F5A623"/>
+                        <path d="M23 25 L25 19 C26 16.3 28 15 32 15 C36 15 38 16.3 39 19 L41 25"
+                              stroke="#DB8E10" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <rect x="18" y="24" width="28" height="24" rx="5" fill="#3B1656"/>
+                        <circle cx="27.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <circle cx="36.5" cy="34" r="2.4" fill="#F5A623"/>
+                        <path d="M27 40 Q32 43.5 37 40" stroke="#F5A623" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                        <path d="M23 24 C23 21 26 19.5 32 19.5 C38 19.5 41 21 41 24"
+                              stroke="#3B1656" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                    </svg>
+
+                    <span class="logo">LubosMart</span>
+
+                </a>
+
+
+                <p>
+                    A modern neighborhood marketplace that makes shopping
+                    from local Filipino sellers simple, reliable, and
+                    close to home.
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3>SHOP</h3>
+
+                <a href="shop.html">Products</a>
+
+                <a href="index.html#categories">Categories</a>
+
+                <a href="index.html#deals">Deals</a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3>ACCOUNT</h3>
+
+                <a href="login.html">Sign in</a>
+
+                <a href="register.html">Register</a>
+
+                <a href="cart.html">My Cart</a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3>SUPPORT</h3>
+
+                <a href="contact.html">Contact Us</a>
+
+                <a href="faqs.html">FAQs</a>
+
+                <a href="terms.html">Terms & Conditions</a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 LubosMart. All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- STOREFRONT (auth link, cart badge, add-to-cart) -->
+
+    <script src="assets/js/valora-storefront.js"></script>
+
+
+</body>
+
+</html>
