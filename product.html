@@ -423,6 +423,14 @@
             });
 
             addToCartBtn.addEventListener("click", function () {
+
+                const session = window.getValoraSession && window.getValoraSession();
+
+                if (!session) {
+                    window.showValoraToast('Please <a href="login.html">sign in</a> first to add items to your cart.');
+                    return;
+                }
+
                 for (let i = 0; i < qty; i++) {
                     window.valoraAddToCart(product.name, formatPrice(product.price));
                 }

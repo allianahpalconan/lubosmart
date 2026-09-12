@@ -76,6 +76,67 @@
     }
 
 
+    /* ---------------------------------------------------
+       TOAST NOTIFICATION
+       Small floating message used to prompt sign-in before
+       adding to cart. Styles are injected once so this works
+       on any page without needing extra CSS files.
+    --------------------------------------------------- */
+
+    window.showValoraToast = function (message, duration) {
+        let toast = document.getElementById("valora-toast");
+
+        if (!toast) {
+            toast = document.createElement("div");
+            toast.id = "valora-toast";
+            document.body.appendChild(toast);
+
+            const style = document.createElement("style");
+            style.textContent = `
+                #valora-toast {
+                    position: fixed;
+                    bottom: 26px;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(16px);
+                    background: #2A0F3F;
+                    color: #fff;
+                    padding: 14px 22px;
+                    border-radius: 10px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    box-shadow: 0 14px 34px rgba(43,15,63,0.28);
+                    z-index: 9999;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.25s ease, transform 0.25s ease;
+                    text-align: center;
+                    max-width: 90vw;
+                }
+                #valora-toast.show {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                    pointer-events: auto;
+                }
+                #valora-toast a {
+                    color: #F5A623;
+                    font-weight: 700;
+                    text-decoration: underline;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        toast.innerHTML = message;
+        toast.classList.add("show");
+
+        clearTimeout(toast._hideTimer);
+        toast._hideTimer = setTimeout(() => {
+            toast.classList.remove("show");
+        }, duration || 3200);
+    }
+
+
     function wireAddToCartButtons() {
         // Delegated listener on the document so this keeps working even
         // when buttons are re-rendered dynamically (e.g. shop.html
@@ -85,6 +146,13 @@
             if (!button) return;
 
             event.preventDefault();
+
+            const session = window.getValoraSession && window.getValoraSession();
+
+            if (!session) {
+                window.showValoraToast('Please <a href="login.html">sign in</a> first to add items to your cart.');
+                return;
+            }
 
             const name = button.getAttribute("data-name") || "Product";
             const price = button.getAttribute("data-price") || "";
