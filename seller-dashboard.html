@@ -98,17 +98,56 @@
         .listing-thumb {
             width: 44px; height: 44px; border-radius: 10px; background: var(--primary-light); color: var(--primary);
             display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0;
+            overflow: hidden;
         }
+        .listing-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
         .listing-info { flex: 1; min-width: 0; }
         .listing-name { font-size: 13px; font-weight: 600; }
         .listing-meta { color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+        .listing-desc { color: var(--muted); font-size: 11px; margin-top: 4px; max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         .stock-pill {
             padding: 5px 11px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
-            background: #E4F3EC; color: #1F7A4C;
+            background: #E4F3EC; color: #1F7A4C; white-space: nowrap;
         }
         .stock-pill.low { background: #FFF3DE; color: var(--accent-dark); }
+        .stock-pill.out { background: #FCE7E7; color: #B3261E; }
+
+        .stock-box { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+
+        .stock-edit-btn {
+            border: 1px solid var(--border); background: white; color: var(--primary);
+            width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        }
+        .stock-edit-btn:hover { background: var(--primary-light); }
+
+        .stock-input {
+            width: 62px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 12px; font-family: inherit; text-align: center;
+        }
+
+        .stock-save-btn {
+            border: none; background: var(--accent); color: var(--primary-dark);
+            padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+        }
+        .stock-save-btn:hover { background: var(--accent-dark); }
+
+        .toggle-oos-btn {
+            border: 1px solid var(--border); background: white; color: var(--muted);
+            padding: 6px 10px; border-radius: 8px; font-size: 10.5px; font-weight: 700; cursor: pointer;
+            white-space: nowrap; transition: 0.2s;
+        }
+        .toggle-oos-btn:hover { border-color: #B3261E; color: #B3261E; }
+        .toggle-oos-btn.restock { border-color: #1F7A4C; color: #1F7A4C; }
+        .toggle-oos-btn.restock:hover { background: #E4F3EC; }
+
+        .remove-btn {
+            border: none; background: transparent; color: #B3261E; font-size: 12px;
+            cursor: pointer; padding: 6px; opacity: 0.7;
+        }
+        .remove-btn:hover { opacity: 1; }
 
         .quick-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 
@@ -119,6 +158,80 @@
         }
         .quick-link:hover { border-color: #D8C3EC; transform: translateY(-3px); }
 
+        /* Modal */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(43,15,63,0.45);
+            z-index: 2000; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: white; border-radius: 16px; width: 100%; max-width: 460px;
+            max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            padding: 22px 26px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .modal-header h2 { font-family: 'Baloo 2', sans-serif; font-size: 19px; color: var(--primary-dark); }
+        .modal-close { border: none; background: transparent; font-size: 20px; color: var(--muted); cursor: pointer; line-height: 1; }
+
+        .modal-body { padding: 22px 26px; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: inherit; font-size: 13px; color: var(--text); background: var(--background);
+        }
+        .form-group textarea { resize: vertical; min-height: 70px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .image-drop {
+            border: 1.5px dashed var(--border); border-radius: 10px; padding: 16px;
+            text-align: center; cursor: pointer; font-size: 12px; color: var(--muted);
+            background: var(--background); transition: 0.2s;
+        }
+        .image-drop:hover { border-color: var(--accent); }
+        .image-preview { width: 100%; max-height: 160px; object-fit: cover; border-radius: 8px; margin-top: 10px; display: none; }
+
+        .modal-footer {
+            padding: 18px 26px 24px; display: flex; justify-content: flex-end; gap: 10px;
+        }
+        .btn-secondary {
+            padding: 11px 18px; border: 1px solid var(--border); background: white; color: var(--primary);
+            border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+        }
+        .btn-primary {
+            padding: 11px 18px; border: none; background: var(--accent); color: var(--primary-dark);
+            border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+        }
+        .btn-primary:hover { background: var(--accent-dark); }
+
+        .field-error { color: #B3261E; font-size: 11px; margin-top: 4px; display: none; }
+
+        /* Orders modal */
+        .order-card {
+            border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px;
+        }
+        .order-card:last-child { margin-bottom: 0; }
+        .order-card-top {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .order-card-id { font-weight: 700; font-size: 12.5px; color: var(--primary-dark); }
+        .order-card-meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
+        .order-card-items { font-size: 12px; color: var(--text); line-height: 1.6; }
+        .order-status-select {
+            padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 11.5px; font-family: inherit; background: white; color: var(--primary); cursor: pointer;
+        }
+        .no-orders-msg { text-align: center; color: var(--muted); font-size: 13px; padding: 30px 10px; }
+        .payout-saved-msg { color: #1F7A4C; font-size: 11.5px; margin-top: 4px; display: none; }
+
         @media (max-width: 900px) {
             .dash-cards { grid-template-columns: 1fr 1fr; }
             .quick-links { grid-template-columns: 1fr 1fr; }
@@ -127,6 +240,9 @@
         @media (max-width: 480px) {
             .dash-cards, .quick-links { grid-template-columns: 1fr; }
             .dash-header { flex-direction: column; align-items: flex-start; }
+            .listing-row { flex-wrap: wrap; }
+            .form-row { grid-template-columns: 1fr; }
+            .order-status-select { width: 100%; }
         }
 
     </style>
@@ -166,13 +282,13 @@
                 <h1 id="welcomeHeading">Welcome back</h1>
                 <p>Here's how your shop is doing on LubosMart.</p>
             </div>
-            <button class="add-product-btn" onclick="alert('Product listing coming soon!')">+ Add a product</button>
+            <button class="add-product-btn" onclick="openProductModal()">+ Add a product</button>
         </div>
 
         <div class="dash-cards">
             <div class="dash-card">
                 <div class="label">Active listings</div>
-                <div class="value">6</div>
+                <div class="value" id="activeListingsValue">0</div>
             </div>
             <div class="dash-card">
                 <div class="label">Orders this month</div>
@@ -190,58 +306,141 @@
 
         <div class="section-title">Your Listings</div>
 
-        <div class="listing-list">
-
-            <div class="listing-row">
-                <div class="listing-thumb">S</div>
-                <div class="listing-info">
-                    <div class="listing-name">Classic Everyday Sneakers</div>
-                    <div class="listing-meta">₱1,299 · Fashion</div>
-                </div>
-                <div class="stock-pill">In stock</div>
-            </div>
-
-            <div class="listing-row">
-                <div class="listing-thumb">W</div>
-                <div class="listing-info">
-                    <div class="listing-name">Wireless Headphones</div>
-                    <div class="listing-meta">₱899 · Electronics</div>
-                </div>
-                <div class="stock-pill low">Low stock</div>
-            </div>
-
-            <div class="listing-row">
-                <div class="listing-thumb">M</div>
-                <div class="listing-info">
-                    <div class="listing-name">Minimal Leather Bag</div>
-                    <div class="listing-meta">₱1,499 · Fashion</div>
-                </div>
-                <div class="stock-pill">In stock</div>
-            </div>
-
-            <div class="listing-row">
-                <div class="listing-thumb">S</div>
-                <div class="listing-info">
-                    <div class="listing-name">Smart Watch</div>
-                    <div class="listing-meta">₱1,999 · Electronics</div>
-                </div>
-                <div class="stock-pill">In stock</div>
-            </div>
-
+        <div class="listing-list" id="listingList">
+            <!-- rendered by JS -->
         </div>
 
         <div class="section-title">Quick Links</div>
 
         <div class="quick-links">
             <a href="shop.html" class="quick-link">🛍️ View storefront</a>
-            <div class="quick-link" onclick="alert('Order management coming soon!')">📦 Manage orders</div>
-            <div class="quick-link" onclick="alert('Payout settings coming soon!')">💳 Payout settings</div>
+            <div class="quick-link" onclick="openOrdersModal()">📦 Manage orders</div>
+            <div class="quick-link" onclick="openPayoutModal()">💳 Payout settings</div>
         </div>
 
     </div>
 
 
-    <script src="assets/js/valora-storefront.js"></script>
+    <!-- Add / Edit Product Modal -->
+    <div class="modal-overlay" id="productModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add a product</h2>
+                <button class="modal-close" onclick="closeProductModal()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="prodName">Product name</label>
+                    <input type="text" id="prodName" placeholder="e.g. Classic Everyday Sneakers">
+                    <div class="field-error" id="errName">Kailangan ng product name.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodDesc">Description</label>
+                    <textarea id="prodDesc" placeholder="Ilarawan ang produkto — materyales, size, features, atbp."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prodPrice">Price (₱)</label>
+                        <input type="number" id="prodPrice" min="0" step="1" placeholder="0">
+                        <div class="field-error" id="errPrice">Maglagay ng valid na presyo.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prodCategory">Category</label>
+                        <select id="prodCategory">
+                            <option value="Fashion">Fashion</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Home">Home</option>
+                            <option value="Beauty">Beauty</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodStock">Stock quantity</label>
+                    <input type="number" id="prodStock" min="0" step="1" placeholder="0">
+                    <div class="field-error" id="errStock">Maglagay ng valid na stock quantity.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Product photo</label>
+                    <div class="image-drop" onclick="document.getElementById('prodImageInput').click()">
+                        📷 I-click para mag-upload ng picture
+                    </div>
+                    <input type="file" id="prodImageInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+                    <img id="imagePreview" class="image-preview">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeProductModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveProduct()">Save product</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Manage Orders Modal -->
+    <div class="modal-overlay" id="ordersModalOverlay">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Manage orders</h2>
+                <button class="modal-close" onclick="closeOrdersModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="ordersListBody">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeOrdersModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Payout Settings Modal -->
+    <div class="modal-overlay" id="payoutModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Payout settings</h2>
+                <button class="modal-close" onclick="closePayoutModal()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="payoutMethod">Payout method</label>
+                    <select id="payoutMethod">
+                        <option value="gcash">GCash</option>
+                        <option value="bank">Bank transfer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="payoutName">Account name</label>
+                    <input type="text" id="payoutName" placeholder="e.g. Juan Dela Cruz">
+                </div>
+
+                <div class="form-group">
+                    <label for="payoutNumber">Account / mobile number</label>
+                    <input type="text" id="payoutNumber" placeholder="e.g. 09171234567">
+                    <div class="payout-saved-msg" id="payoutSavedMsg">Na-save ang payout settings.</div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closePayoutModal()">Cancel</button>
+                <button class="btn-primary" onclick="savePayoutSettings()">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/js/lubosmart-storefront.js"></script>
+    <script src="assets/js/products-data.js"></script>
 
     <script>
 
@@ -250,6 +449,432 @@
         if (session) {
             document.getElementById("welcomeHeading").textContent = "Welcome back, " + session.firstName;
         }
+
+        // ---------- Product / listing state ----------
+
+        const STORAGE_KEY = "lubosmart_seller_listings";
+        let editingImageData = null; // base64 of currently selected image in modal
+
+        function slugify(name) {
+            return name.toString().trim().toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "") || "product";
+        }
+
+        function uniqueId(baseSlug) {
+            let id = baseSlug;
+            let n = 2;
+            while (listings.some(l => l.id === id)) {
+                id = baseSlug + "-" + n;
+                n++;
+            }
+            return id;
+        }
+
+        // One-time migration: earlier versions of this dashboard seeded
+        // listings with generic ids (p1, p2, p3, p4) before they were
+        // switched to match the real product ids in products-data.js.
+        // Anyone who already had the old data in localStorage would end
+        // up with duplicate cards on shop.html (old id treated as a
+        // "new" product). This remaps the old ids to the correct ones,
+        // keeping whatever stock/price the seller already set.
+        const OLD_ID_MAP = {
+            p1: "classic-everyday-sneakers",
+            p2: "wireless-headphones",
+            p3: "minimal-leather-bag",
+            p4: "smart-watch"
+        };
+
+        function migrateLegacyIds(list) {
+            let changed = false;
+            list.forEach(item => {
+                if (OLD_ID_MAP[item.id]) {
+                    item.id = OLD_ID_MAP[item.id];
+                    changed = true;
+                }
+            });
+            return changed;
+        }
+
+        // Reasonable starting stock counts for products seeded straight
+        // from the shared catalog (assets/js/products-data.js), so a
+        // fresh seller dashboard doesn't show everything as "0 in stock".
+        // Falls back to 20 for anything beyond this list.
+        const CATALOG_STOCK_SEED = [24, 3, 15, 9, 12, 18, 7, 30, 40, 25, 10, 16];
+
+        function catalogEntryToListing(product, index) {
+            return {
+                id: product.id,
+                name: product.name,
+                desc: product.description || "",
+                price: product.price,
+                category: product.category || "Other",
+                stock: CATALOG_STOCK_SEED[index] !== undefined ? CATALOG_STOCK_SEED[index] : 20,
+                image: (product.images && product.images[0]) || null
+            };
+        }
+
+        function fullCatalog() {
+            return (window.LUBOSMART_PRODUCTS || []).map(catalogEntryToListing);
+        }
+
+        // Loads the seller's saved listings and merges in any products
+        // from the shared catalog (assets/js/products-data.js) that
+        // aren't in there yet. This is what makes every product in the
+        // shop's catalog show up here to be managed, instead of only
+        // ever showing the handful of items this dashboard happened to
+        // be seeded with the first time it ran.
+        function loadListings() {
+            let stored = [];
+
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) stored = parsed;
+                }
+            } catch (e) {}
+
+            let changed = migrateLegacyIds(stored);
+
+            const existingIds = new Set(stored.map(l => l.id));
+            fullCatalog().forEach(catalogItem => {
+                if (!existingIds.has(catalogItem.id)) {
+                    stored.push(catalogItem);
+                    changed = true;
+                }
+            });
+
+            if (changed) saveListings(stored);
+            return stored;
+        }
+
+        function saveListings(listings) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(listings));
+        }
+
+        let listings = loadListings();
+
+        function stockPillClass(stock) {
+            if (stock <= 0) return "stock-pill out";
+            if (stock <= 5) return "stock-pill low";
+            return "stock-pill";
+        }
+
+        function stockPillLabel(stock) {
+            if (stock <= 0) return "Out of stock";
+            if (stock <= 5) return "Low stock";
+            return "In stock";
+        }
+
+        function initials(name) {
+            return name.trim().charAt(0).toUpperCase();
+        }
+
+        function renderListings() {
+            const list = document.getElementById("listingList");
+            list.innerHTML = "";
+
+            if (listings.length === 0) {
+                list.innerHTML = '<div class="listing-row"><div class="listing-info"><div class="listing-meta">Wala ka pang listing. I-click ang "+ Add a product" para magdagdag.</div></div></div>';
+            }
+
+            listings.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "listing-row";
+                row.id = "row-" + item.id;
+
+                const thumbContent = item.image
+                    ? '<img src="' + item.image + '" alt="' + item.name + '">'
+                    : initials(item.name);
+
+                row.innerHTML = `
+                    <div class="listing-thumb">${thumbContent}</div>
+                    <div class="listing-info">
+                        <div class="listing-name">${escapeHtml(item.name)}</div>
+                        <div class="listing-meta">₱${Number(item.price).toLocaleString()} · ${escapeHtml(item.category)}</div>
+                        ${item.desc ? '<div class="listing-desc">' + escapeHtml(item.desc) + '</div>' : ''}
+                    </div>
+                    <div class="stock-box" id="stockBox-${item.id}">
+                        <span class="${stockPillClass(item.stock)}" id="stockPill-${item.id}">${stockPillLabel(item.stock)} · ${item.stock}</span>
+                        <button class="stock-edit-btn" title="I-edit ang stock" onclick="startEditStock('${item.id}')">✎</button>
+                        ${item.stock > 0
+                            ? `<button class="toggle-oos-btn" onclick="markOutOfStock('${item.id}')">Mark out of stock</button>`
+                            : `<button class="toggle-oos-btn restock" onclick="restock('${item.id}')">Restock</button>`}
+                    </div>
+                    <button class="remove-btn" title="Alisin ang listing" onclick="removeListing('${item.id}')">🗑</button>
+                `;
+
+                list.appendChild(row);
+            });
+
+            document.getElementById("activeListingsValue").textContent = listings.length;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str == null ? "" : String(str);
+            return div.innerHTML;
+        }
+
+        function startEditStock(id) {
+            const item = listings.find(l => l.id === id);
+            if (!item) return;
+            const box = document.getElementById("stockBox-" + id);
+            box.innerHTML = `
+                <input type="number" min="0" step="1" class="stock-input" id="stockInput-${id}"
+                    value="${item.stock}" onkeydown="handleStockInputKeydown(event, '${id}')">
+                <button class="stock-save-btn" onclick="saveStock('${id}')">Save</button>
+            `;
+            const input = document.getElementById("stockInput-" + id);
+            input.focus();
+            input.select();
+        }
+
+        function handleStockInputKeydown(event, id) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                saveStock(id);
+            } else if (event.key === "Escape") {
+                event.preventDefault();
+                renderListings();
+            }
+        }
+
+        function saveStock(id) {
+            const input = document.getElementById("stockInput-" + id);
+            const val = parseInt(input.value, 10);
+            if (isNaN(val) || val < 0) {
+                input.style.borderColor = "#B3261E";
+                return;
+            }
+            const item = listings.find(l => l.id === id);
+            item.stock = val;
+            saveListings(listings);
+            renderListings();
+        }
+
+        function markOutOfStock(id) {
+            const item = listings.find(l => l.id === id);
+            if (!item) return;
+            item.lastStockBeforeOOS = item.stock > 0 ? item.stock : (item.lastStockBeforeOOS || 1);
+            item.stock = 0;
+            saveListings(listings);
+            renderListings();
+        }
+
+        function restock(id) {
+            const item = listings.find(l => l.id === id);
+            if (!item) return;
+            item.stock = item.lastStockBeforeOOS && item.lastStockBeforeOOS > 0 ? item.lastStockBeforeOOS : 1;
+            saveListings(listings);
+            renderListings();
+        }
+
+        function removeListing(id) {
+            if (!confirm("Sigurado ka bang aalisin ang listing na ito?")) return;
+            listings = listings.filter(l => l.id !== id);
+            saveListings(listings);
+            renderListings();
+        }
+
+        // ---------- Add product modal ----------
+
+        function openProductModal() {
+            document.getElementById("modalTitle").textContent = "Add a product";
+            document.getElementById("prodName").value = "";
+            document.getElementById("prodDesc").value = "";
+            document.getElementById("prodPrice").value = "";
+            document.getElementById("prodCategory").value = "Fashion";
+            document.getElementById("prodStock").value = "";
+            document.getElementById("prodImageInput").value = "";
+            document.getElementById("imagePreview").style.display = "none";
+            document.getElementById("imagePreview").src = "";
+            editingImageData = null;
+            clearFieldErrors();
+            document.getElementById("productModalOverlay").classList.add("open");
+        }
+
+        function closeProductModal() {
+            document.getElementById("productModalOverlay").classList.remove("open");
+        }
+
+        function clearFieldErrors() {
+            ["errName", "errPrice", "errStock"].forEach(id => {
+                document.getElementById(id).style.display = "none";
+            });
+        }
+
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                editingImageData = e.target.result;
+                const preview = document.getElementById("imagePreview");
+                preview.src = editingImageData;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProduct() {
+            clearFieldErrors();
+
+            const name = document.getElementById("prodName").value.trim();
+            const desc = document.getElementById("prodDesc").value.trim();
+            const price = parseFloat(document.getElementById("prodPrice").value);
+            const category = document.getElementById("prodCategory").value;
+            const stock = parseInt(document.getElementById("prodStock").value, 10);
+
+            let hasError = false;
+            if (!name) { document.getElementById("errName").style.display = "block"; hasError = true; }
+            if (isNaN(price) || price < 0) { document.getElementById("errPrice").style.display = "block"; hasError = true; }
+            if (isNaN(stock) || stock < 0) { document.getElementById("errStock").style.display = "block"; hasError = true; }
+            if (hasError) return;
+
+            const newProduct = {
+                id: uniqueId(slugify(name)),
+                name: name,
+                desc: desc,
+                price: price,
+                category: category,
+                stock: stock,
+                image: editingImageData
+            };
+
+            listings.push(newProduct);
+            saveListings(listings);
+            renderListings();
+            closeProductModal();
+        }
+
+        // Close modal on outside click
+        document.getElementById("productModalOverlay").addEventListener("click", function (e) {
+            if (e.target === this) closeProductModal();
+        });
+
+        // ---------- Manage Orders modal ----------
+
+        const SELLER_ORDERS_KEY = "valora_orders";
+        const ORDER_STATUSES = ["Processing", "Shipped", "Delivered", "Cancelled"];
+
+        function openOrdersModal() {
+            renderOrdersModal();
+            document.getElementById("ordersModalOverlay").classList.add("open");
+        }
+
+        function closeOrdersModal() {
+            document.getElementById("ordersModalOverlay").classList.remove("open");
+        }
+
+        function loadAllOrders() {
+            try {
+                if (typeof window.getValoraOrders === "function") return window.getValoraOrders();
+                const raw = localStorage.getItem(SELLER_ORDERS_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function renderOrdersModal() {
+            const body = document.getElementById("ordersListBody");
+            const orders = loadAllOrders();
+
+            if (orders.length === 0) {
+                body.innerHTML = '<div class="no-orders-msg">Wala pang order na dumadaan. Lalabas dito ang mga order kapag may nag-checkout sa shop.</div>';
+                return;
+            }
+
+            body.innerHTML = orders.map(order => {
+                const dateStr = new Date(order.date).toLocaleDateString("en-PH", {
+                    year: "numeric", month: "short", day: "numeric"
+                });
+                const itemsHtml = (order.items || []).map(i => escapeHtml(i.name) + " ×" + i.qty).join("<br>");
+                const currentStatus = order.status || "Processing";
+                const options = ORDER_STATUSES.map(s =>
+                    `<option value="${s}" ${currentStatus === s ? "selected" : ""}>${s}</option>`
+                ).join("");
+
+                return `
+                    <div class="order-card">
+                        <div class="order-card-top">
+                            <div>
+                                <div class="order-card-id">${escapeHtml(order.id)}</div>
+                                <div class="order-card-meta">${escapeHtml(order.email || "")} · ${dateStr} · ₱${Number(order.total || 0).toLocaleString("en-PH")}</div>
+                            </div>
+                            <select class="order-status-select" onchange="updateOrderStatus('${order.id}', this.value)">
+                                ${options}
+                            </select>
+                        </div>
+                        <div class="order-card-items">${itemsHtml}</div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            try {
+                const raw = localStorage.getItem(SELLER_ORDERS_KEY);
+                const orders = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(orders)) return;
+                const order = orders.find(o => o.id === orderId);
+                if (!order) return;
+                order.status = newStatus;
+                localStorage.setItem(SELLER_ORDERS_KEY, JSON.stringify(orders));
+            } catch (e) {}
+        }
+
+        document.getElementById("ordersModalOverlay").addEventListener("click", function (e) {
+            if (e.target === this) closeOrdersModal();
+        });
+
+        // ---------- Payout Settings modal ----------
+
+        function payoutStorageKey() {
+            const email = session && session.email ? session.email.toLowerCase() : "guest";
+            return "lubosmart_seller_payout_" + email;
+        }
+
+        function loadPayoutSettings() {
+            try {
+                const raw = localStorage.getItem(payoutStorageKey());
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function openPayoutModal() {
+            const saved = loadPayoutSettings();
+            document.getElementById("payoutMethod").value = saved.method || "gcash";
+            document.getElementById("payoutName").value = saved.name || "";
+            document.getElementById("payoutNumber").value = saved.number || "";
+            document.getElementById("payoutSavedMsg").style.display = "none";
+            document.getElementById("payoutModalOverlay").classList.add("open");
+        }
+
+        function closePayoutModal() {
+            document.getElementById("payoutModalOverlay").classList.remove("open");
+        }
+
+        function savePayoutSettings() {
+            const data = {
+                method: document.getElementById("payoutMethod").value,
+                name: document.getElementById("payoutName").value.trim(),
+                number: document.getElementById("payoutNumber").value.trim()
+            };
+            localStorage.setItem(payoutStorageKey(), JSON.stringify(data));
+            document.getElementById("payoutSavedMsg").style.display = "block";
+        }
+
+        document.getElementById("payoutModalOverlay").addEventListener("click", function (e) {
+            if (e.target === this) closePayoutModal();
+        });
+
+        renderListings();
 
     </script>
 
